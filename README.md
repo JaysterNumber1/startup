@@ -36,9 +36,28 @@ This is what a user's account page will show, note the game history.
 
 ```mermaid
 sequenceDiagram
-    actor You
-    actor Website
-    You->>Website: Replace this with your design
+    actor Player
+    participant Client
+    participant Server
+    participant GameLogic as Game Logic
+
+    %% Player makes a move
+    Player->>Client: Makes move
+    Client->>Server: Send move
+    Server->>GameLogic: Validate legal move
+
+    alt Move is legal
+        Game-->>Server: Move accepted
+        Server->>Game: Update board & log move
+        Server-->>Client: Send updated board
+        Client-->>Plyer: Show updated board
+
+    else Move is illegal
+        Game-->>Server: Move rejected
+        Server-->>Client: Reject move
+        Client-->>Player: Don't move piece, show error
+    end
+    
 ```
 
 ### Key features
