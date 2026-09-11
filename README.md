@@ -34,6 +34,10 @@ This is what the login screen will look like, with a fun quote from the [AnimeCh
 
 This is what a user's account page will show, note the game history.
 
+##### Gameplay Loop
+
+This is an example of what the gameplay loop will look like integrated.
+
 ```mermaid
 sequenceDiagram
     actor Player
