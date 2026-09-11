@@ -24,7 +24,11 @@ Have you ever wanted to learn how to play Shogi, the Japanese version of Chess? 
 ![An image of a shogi board](images/PLACEHOLDER-ShogiBoard.jpg)
 <!-- https://photock.org/photo/shogi-board-and-pieces-3 -->
 
-This is the fundamental Shogi board. Current assets for the website are currently in development.
+This is the fundamental Shogi board.
+
+![An image of how to play, showing how the gold general moves](images/Shogi%20Examples.png)
+
+This is what the how-to-play manual will look like. Note the indicators for how the shogi piece will move.
 
 ![Placeholder - Login Screen](images/placeholder.png)
 
