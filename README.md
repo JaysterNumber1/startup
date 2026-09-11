@@ -39,12 +39,12 @@ sequenceDiagram
     actor Player
     participant Client
     participant Server
-    participant GameLogic as Game Logic
+    participant Game as Game State
 
     %% Player makes a move
     Player->>Client: Makes move
     Client->>Server: Send move
-    Server->>GameLogic: Validate legal move
+    Server->>Game Validate legal move
 
     alt Move is legal
         Game-->>Server: Move accepted
