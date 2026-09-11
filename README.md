@@ -2,7 +2,7 @@
 
 [My Notes](notes.md)
 
-This application is an online way to learn and play Shogi- Japanese Chess.
+This application is an online way to learn and play Shogi-Japanese Chess.
 
 <!-- [!NOTE]
 > This is a template for your startup application. You must modify this `README.md` file for each phase of your development. You only need to fill in the section for each deliverable when that deliverable is submitted in Canvas. Without completing the section for a deliverable, the TA will not know what to look for when grading your submission. Feel free to add additional information to each deliverable description, but make sure you at least have the list of rubric items and a description of what you did for each item.
@@ -91,9 +91,9 @@ I am going to use the required technologies in the following ways.
 - **WebSocket** - Takes verified moves and syncs all clients. Also, implement a live chat feature so users may banter whilst playing.
 
 ## 🚀 Specification Deliverable
-<!-->
-> Fill in this sections as the submission artifact for this deliverable. You can refer to this [example](https://github.com/webprogramming260/startup-example/blob/main/README.md) for inspiration.
-<-->
+<!--
+Fill in this sections as the submission artifact for this deliverable. You can refer to this [example](https://github.com/webprogramming260/startup-example/blob/main/README.md) for inspiration.
+-->
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
@@ -104,8 +104,8 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 - [x] Description of how you will use each technology including your 3rd party API and use of WebSocket
 - [x] One or more rough sketches of your application. Images must be embedded in this file using Markdown image references.
 
-[!NOTE]
-Will continue to throw together examples for the login screen and for the account tab.
+> [!NOTE]
+> Will continue to throw together examples for the login screen and for the account tab.
 
 ## 🚀 AWS deliverable
 
