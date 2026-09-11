@@ -55,19 +55,24 @@ I am going to use the required technologies in the following ways.
 - **HTML** - Utilize HTML for the structure of the website. At least 4 main pages: login, How-to-play tutorial/guide, game screen, and account information. 
 - **CSS** - Style the website so that it looks good on all screen sizes, especially so that the website is useable both on mobile and on desktop. Allows for players to change the board and game piece assests with different variations.
 - **React** - The main client-side service by which the client will interact with the Shogi game. In addition, will allow the user to log in and to access the tutorial/customization features. 
-- **Service** - Manage game sessions, validate legal Sohgi moves, and update game states for all players. Provide further chat functionality for real-time game chat. Link to the database for user information such as game history. In addition, pulls a fun quote from an anime from [the AnimeChan API!](https://github.com/AnimechanOrg/animechan)
-- **Database** - Store authenification information, list of users, the play-by-play history of played games, and players' win-lose ratios.
-- **WebSocket** - As each user plays moves, that move is shown for their opponent and active player changes. WebSocket will update verified moves from the backend. Also, implement a live chat feature so users may banter whilst playing.
+- **Service** - Manage game sessions, validate legal Shogi moves, and update game states for all players. Provide further chat functionality for real-time game chat. Link to the database for user information such as game history. In addition, pulls a fun quote from an anime from [the AnimeChan API!](https://github.com/AnimechanOrg/animechan)
+- **Database** - Store:
+    + authenification information
+    + list of users 
+    + the play-by-play history of played games
+    + players' win-lose ratios.
+- **WebSocket** - Takes verified moves and syncs all clients. Also, implement a live chat feature so users may banter whilst playing.
 
 ## 🚀 Specification Deliverable
-
+<!-->
 > [!NOTE]
 > Fill in this sections as the submission artifact for this deliverable. You can refer to this [example](https://github.com/webprogramming260/startup-example/blob/main/README.md) for inspiration.
+<-->
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
 - [x] I completed the prerequisites for this deliverable (Git commit requirement)
-- [ ] Proper use of Markdown
+- [x] Proper use of Markdown
 - [x] A concise and compelling elevator pitch
 - [x] Description of key features
 - [x] Description of how you will use each technology including your 3rd party API and use of WebSocket
