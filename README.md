@@ -50,14 +50,14 @@ sequenceDiagram
         Game-->>Server: Move accepted
         Server->>Game: Update board & log move
         Server-->>Client: Send updated board
-        Client-->>Plyer: Show updated board
+        Client-->>Player: Show updated board
 
     else Move is illegal
         Game-->>Server: Move rejected
         Server-->>Client: Reject move
         Client-->>Player: Don't move piece, show error
     end
-    
+
 ```
 
 ### Key features
