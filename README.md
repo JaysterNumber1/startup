@@ -22,6 +22,7 @@ Have you ever wanted to learn how to play Shogi, the Japanese version of Chess? 
 ### Design
 
 ![An image of a shogi board](images/PLACEHOLDER-ShogiBoard.jpg)
+<!-- https://photock.org/photo/shogi-board-and-pieces-3 -->
 
 This is the fundamental Shogi board. Current assets for the website are currently in development.
 
@@ -65,11 +66,11 @@ I am going to use the required technologies in the following ways.
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] I completed the prerequisites for this deliverable (Git commit requirement)
+- [x] I completed the prerequisites for this deliverable (Git commit requirement)
 - [ ] Proper use of Markdown
-- [ ] A concise and compelling elevator pitch
-- [ ] Description of key features
-- [ ] Description of how you will use each technology including your 3rd party API and use of WebSocket
+- [x] A concise and compelling elevator pitch
+- [x] Description of key features
+- [x] Description of how you will use each technology including your 3rd party API and use of WebSocket
 - [ ] One or more rough sketches of your application. Images must be embedded in this file using Markdown image references.
 
 ## 🚀 AWS deliverable
