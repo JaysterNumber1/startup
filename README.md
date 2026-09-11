@@ -104,7 +104,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 - [x] Description of how you will use each technology including your 3rd party API and use of WebSocket
 - [x] One or more rough sketches of your application. Images must be embedded in this file using Markdown image references.
 
-[!Note]
+[!NOTE]
 Will continue to throw together examples for the login screen and for the account tab.
 
 ## 🚀 AWS deliverable
