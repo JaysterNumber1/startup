@@ -1,6 +1,8 @@
-# Your startup name here
+# SHOGI SHOWDOWN
 
-[My Notes](notes.md)
+<!--
+> [My Notes](notes.md)
+-->
 
 This application is an online way to learn and play Shogi-Japanese Chess.
 
