@@ -21,9 +21,17 @@ Have you ever wanted to learn how to play Shogi, the Japanese version of Chess? 
 
 ### Design
 
-![Design image](placeholder.png)
+![An image of a shogi board](images/PLACEHOLDER-ShogiBoard.jpg)
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+This is the fundamental Shogi board. Current assets for the website are currently in development.
+
+![Placeholder - Login Screen](images/placeholder.png)
+
+This is what the login screen will look like, with a fun quote from the [AnimeChan API.](#technologies)
+
+![Placeholder - Account History](images/placeholder.png)
+
+This is what a user's account page will show, note the game history.
 
 ```mermaid
 sequenceDiagram
