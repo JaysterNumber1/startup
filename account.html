@@ -2,14 +2,10 @@
 
 <html lang="en">
 
-<html>
-
-</html>
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shogi History</title>
+    <title>Shogi Account</title>
     <link rel="icon" href="/images/favicon-shogi-piece.png">
 </head>
 
@@ -28,7 +24,61 @@
     </header>
 
     <main>
+        <section id="account-info">
+            <h2>
+                Account Information
+            </h2>
+            <h3>
+                Username: JaysterNumber1
+            </h3>
+            <button id="pass-change">Change Password?</button>
 
+        </section>
+
+        <section id="customize-cosmetic">
+            <h3>Customize Game</h3>
+            <label for="game-piece-style">Select game pieces:</label>
+
+            <select id="game-piece-style" name="selected-game-pieces">
+                <option value="cartoony">Cartoony</option>
+                <option value="english-names">English Names</option>
+                <option value="japanese-kanji">Japanese Kanji</option>
+
+
+            </select>
+        </section>
+
+        <section id="match-history">
+            <h3>
+                Match History
+            </h3>
+            <article class="match">
+                Played S0meb0dyS0metime on 2026-09-18
+                <br>
+                You Won!
+                <button class="view-match">
+                    See Match play-by-play?
+                </button>
+            </article>
+            <br>
+            <article class="match">
+                Played S0meb0dyS0metime on 2026-09-18
+                <br>
+                You Lost!
+                <button class="view-match">
+                    See Match play-by-play?
+                </button>
+            </article>
+            <br>
+            <article class="match">
+                Played S0meb0dyS0metime on 2026-09-17
+                <br>
+                You Drew!
+                <button class="view-match">
+                    See Match play-by-play?
+                </button>
+            </article>
+        </section>
 
 
 
