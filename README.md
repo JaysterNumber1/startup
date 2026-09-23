@@ -122,15 +122,15 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
 - [x] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
-- [ ] **HTML pages** - I did not complete this part of the deliverable.
-- [ ] **Proper HTML element usage** - I did not complete this part of the deliverable.
-- [ ] **Links** - I did not complete this part of the deliverable.
-- [ ] **Text** - I did not complete this part of the deliverable.
-- [ ] **3rd party API placeholder** - I did not complete this part of the deliverable.
-- [ ] **Images** - I did not complete this part of the deliverable.
-- [ ] **Login placeholder** - I did not complete this part of the deliverable.
-- [ ] **DB data placeholder** - I did not complete this part of the deliverable.
-- [ ] **WebSocket placeholder** - I did not complete this part of the deliverable.
+- [x] **HTML pages** - I outlined the HTML pages I wish to use.
+- [x]] **Proper HTML element usage**
+- [x]] **Links** - I set up links between the different pages.
+- [x]] **Text** - Contextual text added.
+- [x]] **3rd party API placeholder** - Added where I wish to put my api usage.
+- [x]] **Images** - Added several images.
+- [x]] **Login placeholder** - Added the simple login placeholder.
+- [x]] **DB data placeholder** - Added simple data base data access / content reference.
+- [x]] **WebSocket placeholder** - Added where realtime communcation will occur.
 
 ## 🚀 CSS deliverable
 
