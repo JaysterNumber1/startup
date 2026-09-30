@@ -1,5 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
 
+:root {
+    --green: #c0ff9b;
+    --green-dark: #6f8f72;
+    --beige: #fee9c2;
+    --brown: #6b4f3a;
+    --brown-dark: #453225;
+    --cream: #fffaf0;
+}
 
 * {
     box-sizing: border-box;
@@ -14,25 +22,34 @@ html {
 body {
     margin: 0;
     min-height: 100vh;
+
     font-family: "Noto Sans JP", sans-serif;
+
+    background-color: var(--beige);
+    color: var(--brown-dark);
 
     display: flex;
     flex-direction: column;
 }
 
 header {
-    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 3rem;
+
+    padding: 1.5rem 3rem;
+}
+
+nav {
+    display: flex;
+    gap: 2rem;
 }
 
 header h1 {
     margin: 0;
 }
 
-nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
 
 nav a {
     text-decoration: none;
@@ -59,6 +76,19 @@ button {
 }
 
 footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+
     width: 100%;
-    margin-top: auto;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    footer {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
 }
