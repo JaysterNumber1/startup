@@ -88,7 +88,7 @@
             <section id="board-section" class="play-area-sub-section">
                 <h3>Board - WebSocket to keep playing!</h3>
 
-                <table id="shogi-board">
+                <table class="shogi-board">
                     <tr>
                         <td><button>香</button></td>
                         <td><button>桂</button></td>
@@ -241,13 +241,17 @@
 
                 <div id="player-captured">
                     <h4>Your Captured Pieces</h4>
-                    <button>歩</button>
-                    <button>銀</button>
+                    <div class="captured-pieces">
+                    <div class="shogi-board-piece"><button>歩</button></div>
+                    <div class="shogi-board-piece"><button>銀</button></div>
+                    </div>
                 </div>
 
                 <div id="opponent-captured">
                     <h4>Opponent's Captured Pieces</h4>
-                    <button>歩</button>
+                    <div class="captured-pieces">
+                    <div class="shogi-board-piece"><button>歩</button></div>
+                    </div>
                 </div>
 
                 <p>

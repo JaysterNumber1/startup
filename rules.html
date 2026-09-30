@@ -85,7 +85,7 @@
                 The pawn can move one space forward. Unlike chess, shogi pawns
                 cannot move diagonally or capture diagonally.
             </p>
-            <table>
+            <table class="shogi-board">>
                 <tr>
                     <td><button>　</button></td>
                     <td><button>　</button></td>
@@ -96,7 +96,7 @@
                 <tr>
                     <td><button>　</button></td>
                     <td><button>　</button></td>
-                    <td><button>Ｘ</button></td>
+                    <td class="shogi-legal-move"><button >　</button></td>
                     <td><button>　</button></td>
                     <td><button>　</button></td>
 
@@ -105,7 +105,7 @@
 
                     <td><button>　</button></td>
                     <td><button>　</button></td>
-                    <td><button>歩</button></td>
+                    <td class="shogi-selected-piece"><button>歩</button></td>
                     <td><button>　</button></td>
                     <td><button>　</button></td>
 
@@ -142,36 +142,36 @@
                 The rook can move any number of spaces horizontally or
                 vertically, as long as there are no pieces blocking its path.
             </p>
-            <table>
+            <table class="shogi-board">
                 <tr>
                     <td><button>　</button></td>
                     <td><button>　</button></td>
-                    <td><button>Ｘ</button></td>
+                    <td class="shogi-legal-move"><button >　</button></td>
                     <td><button>　</button></td>
                     <td><button>　</button></td>
                 </tr>
                 <tr>
                     <td><button>　</button></td>
                     <td><button>　</button></td>
-                    <td><button>Ｘ</button></td>
+                    <td class="shogi-legal-move"><button >　</button></td>
                     <td><button>　</button></td>
                     <td><button>　</button></td>
 
                 </tr>
                 <tr>
 
-                    <td><button>Ｘ</button></td>
-                    <td><button>Ｘ</button></td>
-                    <td><button>飛</button></td>
-                    <td><button>Ｘ</button></td>
-                    <td><button>Ｘ</button></td>
+                    <td class="shogi-legal-move"><button >　</button></td>
+                    <td class="shogi-legal-move"><button >　</button></td>
+                    <td class="shogi-selected-piece"><button>飛</button></td>
+                    <td class="shogi-legal-move"><button >　</button></td>
+                    <td class="shogi-legal-move"><button >　</button></td>
 
                 </tr>
                 <tr>
 
                     <td><button>　</button></td>
                     <td><button>　</button></td>
-                    <td><button>Ｘ</button></td>
+                    <td class="shogi-legal-move"><button >　</button></td>
                     <td><button>　</button></td>
                     <td><button>　</button></td>
 
@@ -180,7 +180,7 @@
 
                     <td><button>　</button></td>
                     <td><button>　</button></td>
-                    <td><button>Ｘ</button></td>
+                    <td class="shogi-legal-move"><button >　</button></td>
                     <td><button>　</button></td>
                     <td><button>　</button></td>
 
@@ -200,47 +200,47 @@
                 The bishop can move any number of spaces diagonally, as long
                 as there are no pieces blocking its path.
             </p>
-            <table>
+            <table class="shogi-board">
                 <tr>
-                    <td><button>Ｘ</button></td>
+                    <td class="shogi-legal-move"><button >　</button></td>
                     <td><button>　</button></td>
                     <td><button>　</button></td>
                     <td><button>　</button></td>
-                    <td><button>Ｘ</button></td>
+                    <td class="shogi-legal-move"><button >　</button></td>
                 </tr>
                 <tr>
                     <td><button>　</button></td>
-                    <td><button>Ｘ</button></td>
+                    <td class="shogi-legal-move"><button >　</button></td>
                     <td><button>　</button></td>
-                    <td><button>Ｘ</button></td>
-                    <td><button>　</button></td>
-
-                </tr>
-                <tr>
-
-                    <td><button>　</button></td>
-                    <td><button>　</button></td>
-                    <td><button>角</button></td>
-                    <td><button>　</button></td>
+                    <td class="shogi-legal-move"><button >　</button></td>
                     <td><button>　</button></td>
 
                 </tr>
                 <tr>
 
                     <td><button>　</button></td>
-                    <td><button>Ｘ</button></td>
                     <td><button>　</button></td>
-                    <td><button>Ｘ</button></td>
+                    <td class="shogi-selected-piece"><button>角</button></td>
+                    <td><button>　</button></td>
                     <td><button>　</button></td>
 
                 </tr>
                 <tr>
 
-                    <td><button>Ｘ</button></td>
+                    <td><button>　</button></td>
+                    <td class="shogi-legal-move"><button >　</button></td>
+                    <td><button>　</button></td>
+                    <td class="shogi-legal-move"><button >　</button></td>
+                    <td><button>　</button></td>
+
+                </tr>
+                <tr>
+
+                    <td class="shogi-legal-move"><button >　</button></td>
                     <td><button>　</button></td>
                     <td><button>　</button></td>
                     <td><button>　</button></td>
-                    <td><button>Ｘ</button></td>
+                    <td class="shogi-legal-move"><button >　</button></td>
 
                 </tr>
             </table>
