@@ -28,7 +28,6 @@ body {
     margin: 0;
     min-height: 100vh;
 
-    font-family: "Noto Sans JP", sans-serif;
 
     background-color: var(--beige);
     color: var(--brown-dark);
@@ -254,12 +253,12 @@ header {
 }
 
 @media (max-width: 600px) {
-    #shogi-board td {
+    .shogi-board td {
         width: 10vw;
         height: 10vw;
     }
 
-    #shogi-board button {
+    .shogi-board button {
         font-size: 5vw;
     }
 }
