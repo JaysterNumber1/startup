@@ -39,15 +39,30 @@ header {
     gap: 3rem;
 
     padding: 1.5rem 3rem;
+
+    background-color: var(--brown);
+    color: var(--cream);
+}
+
+header h1 {
+    margin: 0;
 }
 
 nav {
     display: flex;
     gap: 2rem;
+
 }
 
-header h1 {
-    margin: 0;
+nav > a{
+    padding: 3px 5px 3px 5px;
+    background-color: var(--cream);
+    border: 3px solid #d8c9b2;
+    border-radius: 15px;
+}
+
+h2{
+    margin-top: 0;
 }
 
 
@@ -57,14 +72,18 @@ nav a {
 
 main {
     width: min(90%, 1100px);
-    margin: 0 auto;
+    margin: 3rem auto;
 
     display: grid;
     gap: 2rem;
 }
 
 section {
-    width: 100%;
+    padding: 2rem;
+
+    background-color: var(--cream);
+    border: 1px solid #d8c9b2;
+    border-radius: 12px;
 }
 
 input {
@@ -82,8 +101,17 @@ footer {
     gap: 3rem;
 
     width: 100%;
-    padding: 1.5rem;
+    margin-top: auto;
+    padding: .3rem;
+
+    background-color: var(--brown);
+    color: var(--cream);
+
     text-align: center;
+}
+
+footer a {
+    color: var(--cream);
 }
 
 @media (max-width: 600px) {
