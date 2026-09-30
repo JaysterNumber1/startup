@@ -107,9 +107,7 @@ footer a {
     color: var(--cream);
 }
 
-header {
-    background-color: var(--brown);
-}
+
 
 #play-area {
     display: flex;
