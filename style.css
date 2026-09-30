@@ -110,6 +110,12 @@ header {
     background-color: var(--brown);
 }
 
+#play-area {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
 .navbar-brand {
     color: var(--cream);
     
