@@ -139,7 +139,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 - [x] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
 - [x] **Visually appealing colors and layout. No overflowing elements.** - Utilized various colors to seperate the backgrounds, sections, headers, and footers.
 - [x] **Use of a CSS framework** - Used bootstrap for the buttons and naviation dropdown.
-- [ ] **All visual elements styled using CSS** -Still need to update the shogi board and how to play sections.
+- [x] **All visual elements styled using CSS** - Updated Shogi board to have css visuals.
 - [x] **Responsive to window resizing using flexbox and/or grid display** - Once the window is narrow enough, reduces the navigation to a dropdown selector.
 - [x] **Use of a imported font** - Using imported Japanese font. This is to better show any Japanese text.
 - [x] **Use of different types of selectors including element, class, ID, and pseudo selectors** - Actively using: elements for general layout, classes for repeated but more specific items such as the navigation, using ids to handle one off items, and pseudo selectors to handle actions like hovering over a button.
