@@ -9,6 +9,9 @@
     --cream: #fffaf0;
 }
 
+
+
+
 * {
     box-sizing: border-box;
     font-family: 'Noto Sans JP', sans-serif;
@@ -42,33 +45,21 @@ header {
 
     background-color: var(--brown);
     color: var(--cream);
+          
 }
 
 header h1 {
     margin: 0;
 }
 
-nav {
-    display: flex;
-    gap: 2rem;
 
-}
-
-nav > a{
-    padding: 3px 5px 3px 5px;
-    background-color: var(--cream);
-    border: 3px solid #d8c9b2;
-    border-radius: 15px;
-}
 
 h2{
     margin-top: 0;
 }
 
 
-nav a {
-    text-decoration: none;
-}
+
 
 main {
     width: min(90%, 1100px);
@@ -84,6 +75,7 @@ section {
     background-color: var(--cream);
     border: 1px solid #d8c9b2;
     border-radius: 12px;
+    width: 100%;
 }
 
 input {
@@ -114,9 +106,56 @@ footer a {
     color: var(--cream);
 }
 
-@media (max-width: 600px) {
+header {
+    background-color: var(--brown);
+}
+
+.navbar-brand {
+    color: var(--cream);
+    
+}
+
+
+#navbar-brand-text {
+    font-weight: 700;
+    color: var(--cream);
+}
+
+.navbar-nav {
+    gap: 1rem;
+}
+
+.navbar-nav a:hover {
+    background-color: var(--cream);
+
+}
+
+.navbar-toggler
+    {
+        width: 3.5rem;
+        padding: 0;
+    }
+
+
+@media (max-width: 991.98px) {
     footer {
         flex-direction: column;
         gap: 0.5rem;
+    }
+
+    .navbar-brand {
+        padding-bottom: 1rem;
+    }
+
+    .navbar-nav {
+        padding-top: 1rem;
+    }
+
+    .btn-outline-light {
+        width: 100%;
+     
+    }
+    #nav-item-last {
+        padding-bottom: .5rem;
     }
 }
