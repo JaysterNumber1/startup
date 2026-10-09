@@ -115,6 +115,10 @@ footer a {
     gap: 1.5rem;
 }
 
+.navbar {
+    position: sticky;
+}
+
 .navbar-brand {
     color: var(--cream);
 

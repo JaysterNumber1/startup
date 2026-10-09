@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
 import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
@@ -10,6 +10,8 @@ import { History } from './history/history';
 import { ScrollToTop } from './scrollToTop';
 
 export default function App() {
+    const [isNavigationExpanded, setIsNavigationExpanded] = useState(false);
+
     return (
         <BrowserRouter>
 
@@ -25,16 +27,17 @@ export default function App() {
                         <button
                             className="navbar-toggler"
                             type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#mainNavigation"
                             aria-controls="mainNavigation"
-                            aria-expanded="false"
-                            aria-label="Toggle navigation">
+                            aria-expanded={isNavigationExpanded}
+                            aria-label="Toggle navigation"
+                            onClick={() => setIsNavigationExpanded((expanded) => !expanded)}>
 
                             <span className="navbar-toggler-icon"></span>
                         </button>
 
-                        <nav className="collapse navbar-collapse" id="mainNavigation">
+                        <nav
+                            className={`collapse navbar-collapse${isNavigationExpanded ? ' show' : ''}`}
+                            id="mainNavigation">
                             <ul className="navbar-nav">
 
                                 <li className="nav-item">
