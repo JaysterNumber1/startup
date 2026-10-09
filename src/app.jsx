@@ -91,20 +91,22 @@ function NotFound() {
 
             <section>
                 <div className='error-div'>
+                    <p className='not-found'>
+                        404 - Site not found.
+                    </p>
                     <img
                         src="images/Sharaku-404.jpg"
                         alt='Famous Japanese painting "Sharaku"'
-                        style={{ width: '35vw', height: 'auto' }}
+                        className='not-found-image'
                     />
 
                     <img
                         src="images/Sharaku-404.jpg"
                         alt='Famous Japanese painting "Sharaku"'
-                        style={{ width: '35vw', height: 'auto', transform: 'scaleX(-1)' }}
+                        className='not-found-image'
+                        style={{ transform: 'scaleX(-1)' }}
                     />
-                    <p className='not-found'>
-                        404 - Site not found.
-                    </p>
+
                 </div>
 
             </section>

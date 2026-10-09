@@ -226,8 +226,15 @@ footer a {
     background-color: var(--green);
 }
 
+.not-found-image {
+    width: 30vw;
+    height: auto;
+}
+
 .not-found {
-    font-size: 5rem;
+    font-size: 5vw;
+    padding-left: 12vw;
+    padding-right: 12vw;
 }
 
 .error-div {
