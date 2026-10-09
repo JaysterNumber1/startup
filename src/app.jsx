@@ -7,11 +7,14 @@ import { Account } from './account/account';
 import { Play } from './play/play';
 import { Rules } from './rules/rules';
 import { History } from './history/history';
+import { ScrollToTop } from './scrollToTop';
 
 export default function App() {
     return (
         <BrowserRouter>
+
             <div>
+                <ScrollToTop />
                 <header className="navbar navbar-expand-lg">
                     <div className="container-fluid">
 
