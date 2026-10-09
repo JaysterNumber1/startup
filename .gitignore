@@ -1,2 +1,3 @@
 #ignore the deploy file
 deployFiles.sh
+node_modules/
