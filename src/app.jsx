@@ -38,23 +38,23 @@ export default function App() {
                             <ul className="navbar-nav">
 
                                 <li className="nav-item">
-                                    <NavLink className='nav-link' to="">Home</NavLink>
+                                    <NavLink className="btn btn-outline-light" to="/">Home</NavLink>
                                 </li>
 
                                 <li className="nav-item">
-                                    <NavLink className='nav-link' to="account">Account</NavLink>
+                                    <NavLink className="btn btn-outline-light" to="/account">Account</NavLink>
                                 </li>
 
                                 <li className="nav-item">
-                                    <NavLink className='nav-link' to="play">Play</NavLink>
+                                    <NavLink className="btn btn-outline-light" to="/play">Play</NavLink>
                                 </li>
 
                                 <li className="nav-item">
-                                    <NavLink className='nav-link' to="rules">Rules</NavLink>
+                                    <NavLink className="btn btn-outline-light" to="/rules">Rules</NavLink>
                                 </li>
 
                                 <li className="nav-item" id="nav-item-last">
-                                    <NavLink className='nav-link' to="history">History</NavLink>
+                                    <NavLink className="btn btn-outline-light" to="/history">History</NavLink>
                                 </li>
 
                             </ul>
