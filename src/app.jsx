@@ -11,7 +11,7 @@ import { History } from './history/history';
 export default function App() {
     return (
         <BrowserRouter>
-            <main>
+            <div>
                 <header className="navbar navbar-expand-lg">
                     <div className="container-fluid">
 
@@ -79,12 +79,35 @@ export default function App() {
                         </a>
                     </p>
                 </footer>
-            </main>
+            </div>
         </BrowserRouter>
 
     );
 }
 
 function NotFound() {
-    return <main className="container-fluid bg-secondary text-center">404: Return to sender. Address unknown.</main>;
+    return (
+        <main class="container py-5">
+
+            <section>
+                <div className='error-div'>
+                    <img
+                        src="images/Sharaku-404.jpg"
+                        alt='Famous Japanese painting "Sharaku"'
+                        style={{ width: '35vw', height: 'auto' }}
+                    />
+
+                    <img
+                        src="images/Sharaku-404.jpg"
+                        alt='Famous Japanese painting "Sharaku"'
+                        style={{ width: '35vw', height: 'auto', transform: 'scaleX(-1)' }}
+                    />
+                    <p className='not-found'>
+                        404 - Site not found.
+                    </p>
+                </div>
+
+            </section>
+        </main>
+    );
 }

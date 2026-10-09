@@ -226,6 +226,17 @@ footer a {
     background-color: var(--green);
 }
 
+.not-found {
+    font-size: 5rem;
+}
+
+.error-div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+
+}
+
 @media (max-width: 991.98px) {
     footer {
         flex-direction: column;
