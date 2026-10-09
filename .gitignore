@@ -1,4 +1,4 @@
 #ignore the deploy file
-deployFiles.sh
+deployReact.sh
 node_modules/
 dist/
