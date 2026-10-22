@@ -63,10 +63,34 @@ const initialBoard = [
         { id: 'sente-lance-2', type: '香', promoted: false, player: 'sente' }
     ]
 ];
+const promotePiece = (row, col) => {
+    const newBoard = board.map((r) => [...r]);
+    const piece = newBoard[row][col];
+
+    if (piece && !piece.promoted) {
+        // Map normal piece types to their promoted Kanji equivalents
+        const promotionMap = {
+            '歩': 'と',
+            '香': '杏',
+            '桂': '圭',
+            '銀': '全',
+            '飛': '竜',
+            '角': '馬'
+        };
+
+        if (promotionMap[piece.type]) {
+            piece.type = promotionMap[piece.type];
+            piece.promoted = true;
+            setBoard(newBoard);
+        }
+    }
+};
 
 export function Play() {
     const [board, setBoard] = useState(initialBoard);
     const [selectedSquare, setSelectedSquare] = useState(null);
+
+
 
     const handleSquareClick = (row, col) => {
         if (!selectedSquare) {
@@ -79,6 +103,33 @@ export function Play() {
 
             newBoard[selectedSquare.row][selectedSquare.col] = null;
             newBoard[row][col] = movingPiece;
+
+            const isSenteInZone = movingPiece.player === 'sente' && row <= 2;
+            const isGoteInZone = movingPiece.player === 'gote' && row >= 6;
+            const promotableTypes = ['歩', '香', '桂', '銀', '飛', '角'];
+
+            if (
+                (isSenteInZone || isGoteInZone) &&
+                promotableTypes.includes(movingPiece.type) &&
+                !movingPiece.promoted
+            ) {
+                // Simple browser confirmation prompt (you can replace with a custom modal later)
+                const shouldPromote = window.confirm(`Promote ${movingPiece.type}?`);
+
+                if (shouldPromote) {
+                    const promotionMap = {
+                        '歩': 'と',
+                        '香': '杏',
+                        '桂': '圭',
+                        '銀': '全',
+                        '飛': '竜',
+                        '角': '馬'
+                    };
+
+                    movingPiece.type = promotionMap[movingPiece.type];
+                    movingPiece.promoted = true;
+                }
+            }
 
             setBoard(newBoard);
             setSelectedSquare(null);
