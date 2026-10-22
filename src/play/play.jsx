@@ -2,55 +2,65 @@ import React, { useState, useEffect } from 'react';
 import '/src/app.css';
 
 const initialBoard = [
-    // Row 0: Opponent (Gote) back row
+    // Row 0: Gote (Opponent) back row
     [
-        { type: '香', player: 'gote' },
-        { type: '桂', player: 'gote' },
-        { type: '銀', player: 'gote' },
-        { type: '金', player: 'gote' },
-        { type: '王', player: 'gote' },
-        { type: '金', player: 'gote' },
-        { type: '銀', player: 'gote' },
-        { type: '桂', player: 'gote' },
-        { type: '香', player: 'gote' }
+        { id: 'gote-lance-1', type: '香', promoted: false, player: 'gote' },
+        { id: 'gote-knight-1', type: '桂', promoted: false, player: 'gote' },
+        { id: 'gote-silver-1', type: '銀', promoted: false, player: 'gote' },
+        { id: 'gote-gold-1', type: '金', promoted: false, player: 'gote' },
+        { id: 'gote-king', type: '王', promoted: false, player: 'gote' },
+        { id: 'gote-gold-2', type: '金', promoted: false, player: 'gote' },
+        { id: 'gote-silver-2', type: '銀', promoted: false, player: 'gote' },
+        { id: 'gote-knight-2', type: '桂', promoted: false, player: 'gote' },
+        { id: 'gote-lance-2', type: '香', promoted: false, player: 'gote' }
     ],
-    // Row 1
+    // Row 1: Gote Rook & Bishop
     [
         null,
-        { type: '飛', player: 'gote' },
+        { id: 'gote-rook', type: '飛', promoted: false, player: 'gote' },
         null, null, null, null, null,
-        { type: '角', player: 'gote' },
+        { id: 'gote-bishop', type: '角', promoted: false, player: 'gote' },
         null
     ],
-    // Row 2: Opponent Pawns
-    Array(9).fill({ type: '歩', player: 'gote' }),
+    // Row 2: Gote Pawns (Generated with unique IDs)
+    Array(9).fill(null).map((_, i) => ({
+        id: `gote-pawn-${i + 1}`,
+        type: '歩',
+        promoted: false,
+        player: 'gote'
+    })),
 
     // Rows 3, 4, 5: Empty squares
     Array(9).fill(null),
     Array(9).fill(null),
     Array(9).fill(null),
 
-    // Row 6: Your (Sente) Pawns
-    Array(9).fill({ type: '歩', player: 'sente' }),
-    // Row 7
+    // Row 6: Sente (Your) Pawns
+    Array(9).fill(null).map((_, i) => ({
+        id: `sente-pawn-${i + 1}`,
+        type: '歩',
+        promoted: false,
+        player: 'sente'
+    })),
+    // Row 7: Sente Bishop & Rook
     [
         null,
-        { type: '角', player: 'sente' },
+        { id: 'sente-bishop', type: '角', promoted: false, player: 'sente' },
         null, null, null, null, null,
-        { type: '飛', player: 'sente' },
+        { id: 'sente-rook', type: '飛', promoted: false, player: 'sente' },
         null
     ],
-    // Row 8: Your (Sente) back row
+    // Row 8: Sente (Your) back row
     [
-        { type: '香', player: 'sente' },
-        { type: '桂', player: 'sente' },
-        { type: '銀', player: 'sente' },
-        { type: '金', player: 'sente' },
-        { type: '玉', player: 'sente' },
-        { type: '金', player: 'sente' },
-        { type: '銀', player: 'sente' },
-        { type: '桂', player: 'sente' },
-        { type: '香', player: 'sente' }
+        { id: 'sente-lance-1', type: '香', promoted: false, player: 'sente' },
+        { id: 'sente-knight-1', type: '桂', promoted: false, player: 'sente' },
+        { id: 'sente-silver-1', type: '銀', promoted: false, player: 'sente' },
+        { id: 'sente-gold-1', type: '金', promoted: false, player: 'sente' },
+        { id: 'sente-king', type: '玉', promoted: false, player: 'sente' },
+        { id: 'sente-gold-2', type: '金', promoted: false, player: 'sente' },
+        { id: 'sente-silver-2', type: '銀', promoted: false, player: 'sente' },
+        { id: 'sente-knight-2', type: '桂', promoted: false, player: 'sente' },
+        { id: 'sente-lance-2', type: '香', promoted: false, player: 'sente' }
     ]
 ];
 
