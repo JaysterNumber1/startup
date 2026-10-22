@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '/src/app.css';
 
 const initialBoard = [
-    // Row 0: Gote (Opponent) back row
+    // Row 0: Gote back row
     [
         { id: 'gote-lance-1', type: '香', promoted: false, player: 'gote' },
         { id: 'gote-knight-1', type: '桂', promoted: false, player: 'gote' },
@@ -22,7 +22,7 @@ const initialBoard = [
         { id: 'gote-bishop', type: '角', promoted: false, player: 'gote' },
         null
     ],
-    // Row 2: Gote Pawns (Generated with unique IDs)
+    // Row 2: Gote Pawns 
     Array(9).fill(null).map((_, i) => ({
         id: `gote-pawn-${i + 1}`,
         type: '歩',
@@ -35,7 +35,7 @@ const initialBoard = [
     Array(9).fill(null),
     Array(9).fill(null),
 
-    // Row 6: Sente (Your) Pawns
+    // Row 6: Sente Pawns
     Array(9).fill(null).map((_, i) => ({
         id: `sente-pawn-${i + 1}`,
         type: '歩',
@@ -50,7 +50,7 @@ const initialBoard = [
         { id: 'sente-rook', type: '飛', promoted: false, player: 'sente' },
         null
     ],
-    // Row 8: Sente (Your) back row
+    // Row 8: Sente back row
     [
         { id: 'sente-lance-1', type: '香', promoted: false, player: 'sente' },
         { id: 'sente-knight-1', type: '桂', promoted: false, player: 'sente' },
@@ -63,28 +63,7 @@ const initialBoard = [
         { id: 'sente-lance-2', type: '香', promoted: false, player: 'sente' }
     ]
 ];
-const promotePiece = (row, col) => {
-    const newBoard = board.map((r) => [...r]);
-    const piece = newBoard[row][col];
 
-    if (piece && !piece.promoted) {
-        // Map normal piece types to their promoted Kanji equivalents
-        const promotionMap = {
-            '歩': 'と',
-            '香': '杏',
-            '桂': '圭',
-            '銀': '全',
-            '飛': '竜',
-            '角': '馬'
-        };
-
-        if (promotionMap[piece.type]) {
-            piece.type = promotionMap[piece.type];
-            piece.promoted = true;
-            setBoard(newBoard);
-        }
-    }
-};
 
 export function Play() {
     const [board, setBoard] = useState(initialBoard);
@@ -113,7 +92,7 @@ export function Play() {
                 promotableTypes.includes(movingPiece.type) &&
                 !movingPiece.promoted
             ) {
-                // Simple browser confirmation prompt (you can replace with a custom modal later)
+                // browser prompt, make custom later.
                 const shouldPromote = window.confirm(`Promote ${movingPiece.type}?`);
 
                 if (shouldPromote) {
