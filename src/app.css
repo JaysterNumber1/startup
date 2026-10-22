@@ -9,6 +9,7 @@
     --cream: #fffaf0;
     --orange: #38d3fa;
     --board-color: #d6a85f;
+    --hover-gray: rgba(255, 250, 240, 0.35);
 }
 
 
@@ -158,7 +159,6 @@ footer a {
     width: 60px;
     height: 60px;
     padding: 0;
-
     border: 1px solid var(--brown-dark);
     text-align: center;
     vertical-align: middle;
@@ -171,25 +171,39 @@ footer a {
     margin: 0;
     background-color: var(--board-color);
     border: 4px solid var(--brown-dark);
-
 }
 
+/* Apply button sizing & styling to BOTH table cells and captured piece containers */
+.shogi-board td button,
 .shogi-board-piece button {
     width: 100%;
     height: 100%;
-
+    margin: 0;
+    padding: 0;
     border: none;
     background-color: transparent;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     font-family: "Noto Sans JP", sans-serif;
     font-size: 2rem;
     color: var(--brown-dark);
 
     cursor: pointer;
+    box-sizing: border-box;
 }
 
+.shogi-board td button:hover,
 .shogi-board-piece button:hover {
-    background-color: rgba(255, 250, 240, 0.35);
+    background-color: var(--hover-gray);
+}
+
+
+.shogi-board td button.selected {
+    background-color: var(--green) !important;
+    border: 2px solid var(--brown-dark) !important;
 }
 
 .captured-pieces {
@@ -221,7 +235,7 @@ footer a {
 }
 
 .shogi-board button:active {
-    background-color: var(--green);
+    background-color: var(--green) !important;
 }
 
 .shogi-selected-piece {
