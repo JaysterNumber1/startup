@@ -9,7 +9,7 @@ const createInitialBoard = () => [
         new Piece('gote-knight-1', '桂', 'gote'),
         new Piece('gote-silver-1', '銀', 'gote'),
         new Piece('gote-gold-1', '金', 'gote'),
-        new Piece('gote-king', '王', 'gote'),
+        new Piece('gote-king', '玉', 'gote'),
         new Piece('gote-gold-2', '金', 'gote'),
         new Piece('gote-silver-2', '銀', 'gote'),
         new Piece('gote-knight-2', '桂', 'gote'),
@@ -49,7 +49,7 @@ const createInitialBoard = () => [
         new Piece('sente-knight-1', '桂', 'sente'),
         new Piece('sente-silver-1', '銀', 'sente'),
         new Piece('sente-gold-1', '金', 'sente'),
-        new Piece('sente-king', '玉', 'sente'),
+        new Piece('sente-king', '王', 'sente'),
         new Piece('sente-gold-2', '金', 'sente'),
         new Piece('sente-silver-2', '銀', 'sente'),
         new Piece('sente-knight-2', '桂', 'sente'),
@@ -109,8 +109,9 @@ export function Play() {
             ) {
                 // browser prompt, make custom later.
                 const shouldPromote = window.confirm(`Promote ${movingPiece.type}?`);
-
-                movingPiece.promote();
+                if (shouldPromote) {
+                    movingPiece.promote();
+                }
             }
 
             setBoard(newBoard);
