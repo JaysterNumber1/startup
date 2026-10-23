@@ -1,34 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import '/src/app.css';
+import { Piece } from './Piece';
 
-const initialBoard = [
+const createInitialBoard = () => [
     // Row 0: Gote back row
     [
-        { id: 'gote-lance-1', type: '香', promoted: false, player: 'gote' },
-        { id: 'gote-knight-1', type: '桂', promoted: false, player: 'gote' },
-        { id: 'gote-silver-1', type: '銀', promoted: false, player: 'gote' },
-        { id: 'gote-gold-1', type: '金', promoted: false, player: 'gote' },
-        { id: 'gote-king', type: '王', promoted: false, player: 'gote' },
-        { id: 'gote-gold-2', type: '金', promoted: false, player: 'gote' },
-        { id: 'gote-silver-2', type: '銀', promoted: false, player: 'gote' },
-        { id: 'gote-knight-2', type: '桂', promoted: false, player: 'gote' },
-        { id: 'gote-lance-2', type: '香', promoted: false, player: 'gote' }
+        new Piece('gote-lance-1', '香', 'gote'),
+        new Piece('gote-knight-1', '桂', 'gote'),
+        new Piece('gote-silver-1', '銀', 'gote'),
+        new Piece('gote-gold-1', '金', 'gote'),
+        new Piece('gote-king', '王', 'gote'),
+        new Piece('gote-gold-2', '金', 'gote'),
+        new Piece('gote-silver-2', '銀', 'gote'),
+        new Piece('gote-knight-2', '桂', 'gote'),
+        new Piece('gote-lance-2', '香', 'gote')
     ],
     // Row 1: Gote Rook & Bishop
     [
         null,
-        { id: 'gote-rook', type: '飛', promoted: false, player: 'gote' },
+        new Piece('gote-rook', '飛', 'gote'),
         null, null, null, null, null,
-        { id: 'gote-bishop', type: '角', promoted: false, player: 'gote' },
+        new Piece('gote-bishop', '角', 'gote'),
         null
     ],
-    // Row 2: Gote Pawns 
-    Array(9).fill(null).map((_, i) => ({
-        id: `gote-pawn-${i + 1}`,
-        type: '歩',
-        promoted: false,
-        player: 'gote'
-    })),
+    // Row 2: Gote Pawns
+    Array(9).fill(null).map((_, i) => new Piece(`gote-pawn-${i + 1}`, '歩', 'gote')),
 
     // Rows 3, 4, 5: Empty squares
     Array(9).fill(null),
@@ -36,37 +32,33 @@ const initialBoard = [
     Array(9).fill(null),
 
     // Row 6: Sente Pawns
-    Array(9).fill(null).map((_, i) => ({
-        id: `sente-pawn-${i + 1}`,
-        type: '歩',
-        promoted: false,
-        player: 'sente'
-    })),
+    Array(9).fill(null).map((_, i) => new Piece(`sente-pawn-${i + 1}`, '歩', 'sente')),
+
     // Row 7: Sente Bishop & Rook
     [
         null,
-        { id: 'sente-bishop', type: '角', promoted: false, player: 'sente' },
+        new Piece('sente-bishop', '角', 'sente'),
         null, null, null, null, null,
-        { id: 'sente-rook', type: '飛', promoted: false, player: 'sente' },
+        new Piece('sente-rook', '飛', 'sente'),
         null
     ],
+
     // Row 8: Sente back row
     [
-        { id: 'sente-lance-1', type: '香', promoted: false, player: 'sente' },
-        { id: 'sente-knight-1', type: '桂', promoted: false, player: 'sente' },
-        { id: 'sente-silver-1', type: '銀', promoted: false, player: 'sente' },
-        { id: 'sente-gold-1', type: '金', promoted: false, player: 'sente' },
-        { id: 'sente-king', type: '玉', promoted: false, player: 'sente' },
-        { id: 'sente-gold-2', type: '金', promoted: false, player: 'sente' },
-        { id: 'sente-silver-2', type: '銀', promoted: false, player: 'sente' },
-        { id: 'sente-knight-2', type: '桂', promoted: false, player: 'sente' },
-        { id: 'sente-lance-2', type: '香', promoted: false, player: 'sente' }
+        new Piece('sente-lance-1', '香', 'sente'),
+        new Piece('sente-knight-1', '桂', 'sente'),
+        new Piece('sente-silver-1', '銀', 'sente'),
+        new Piece('sente-gold-1', '金', 'sente'),
+        new Piece('sente-king', '玉', 'sente'),
+        new Piece('sente-gold-2', '金', 'sente'),
+        new Piece('sente-silver-2', '銀', 'sente'),
+        new Piece('sente-knight-2', '桂', 'sente'),
+        new Piece('sente-lance-2', '香', 'sente')
     ]
 ];
 
-
 export function Play() {
-    const [board, setBoard] = useState(initialBoard);
+    const [board, setBoard] = useState(createInitialBoard);
     const [selectedSquare, setSelectedSquare] = useState(null);
 
 
@@ -81,72 +73,49 @@ export function Play() {
             const newBoard = board.map((r) => [...r]);
             const movingPiece = newBoard[selectedSquare.row][selectedSquare.col];
             const targetPiece = newBoard[row][col];
+
+            //deselect if own piece (either same or other owned)
             if (targetPiece !== null && targetPiece.player == movingPiece.player) {
                 setSelectedSquare(null);
+                return;
             }
-            else {
-                if (targetPiece !== null && targetPiece.player !== movingPiece.player) {
-                    const demotionMap = {
-                        'と': '歩',
-                        '杏': '香',
-                        '圭': '桂',
-                        '全': '銀',
-                        '竜': '飛',
-                        '馬': '角'
-                    }
-                    if (targetPiece.promoted) {
-                        targetPiece.type = demotionMap[targetPiece.type];
-                    }
-                    const capturedObj = {
-                        id: `${movingPiece.player}-captured-${Date.now().toLocaleString()}`,
-                        type: targetPiece.type,
-                        promoted: false,
-                        player: movingPiece.player // Ownership flips to whoever captured it!
-                    };
-                    if (movingPiece.player === 'sente') {
-                        //setSenteCaptured(prev => [...prev, capturedObj]);
-                        console.log("SENTE CAPTUREd");
 
-                    } else {
-                        //setGoteCaptured(prev => [...prev, capturedObj]);
-                        console.log("GOTE CAPTUED")
-                    }
+            //if capturing opponent's piece
+            if (targetPiece !== null && targetPiece.player !== movingPiece.player) {
+                targetPiece.capture(movingPiece.player)
+
+                if (movingPiece.player === 'sente') {
+                    //setSenteCaptured(prev => [...prev, capturedObj]);
+                    console.log("SENTE CAPTUREd");
+
+                } else {
+                    //setGoteCaptured(prev => [...prev, capturedObj]);
+                    console.log("GOTE CAPTUED")
                 }
-
-                newBoard[selectedSquare.row][selectedSquare.col] = null;
-
-                newBoard[row][col] = movingPiece;
-
-                const isSenteInZone = movingPiece.player === 'sente' && row <= 2;
-                const isGoteInZone = movingPiece.player === 'gote' && row >= 6;
-                const promotableTypes = ['歩', '香', '桂', '銀', '飛', '角'];
-
-                if (
-                    (isSenteInZone || isGoteInZone) &&
-                    promotableTypes.includes(movingPiece.type) &&
-                    !movingPiece.promoted
-                ) {
-                    // browser prompt, make custom later.
-                    const shouldPromote = window.confirm(`Promote ${movingPiece.type}?`);
-
-                    if (shouldPromote) {
-                        const promotionMap = {
-                            '歩': 'と',
-                            '香': '杏',
-                            '桂': '圭',
-                            '銀': '全',
-                            '飛': '竜',
-                            '角': '馬'
-                        };
-
-                        movingPiece.type = promotionMap[movingPiece.type];
-                        movingPiece.promoted = true;
-                    }
-                }
-
-                setBoard(newBoard);
-                setSelectedSquare(null);
             }
+
+            newBoard[selectedSquare.row][selectedSquare.col] = null;
+
+            newBoard[row][col] = movingPiece;
+
+            const isSenteInZone = movingPiece.player === 'sente' && row <= 2;
+            const isGoteInZone = movingPiece.player === 'gote' && row >= 6;
+            const promotableTypes = ['歩', '香', '桂', '銀', '飛', '角'];
+
+            if (
+                (isSenteInZone || isGoteInZone) &&
+                promotableTypes.includes(movingPiece.type) &&
+                !movingPiece.promoted
+            ) {
+                // browser prompt, make custom later.
+                const shouldPromote = window.confirm(`Promote ${movingPiece.type}?`);
+
+                movingPiece.promote();
+            }
+
+            setBoard(newBoard);
+            setSelectedSquare(null);
+
         }
     };
 
