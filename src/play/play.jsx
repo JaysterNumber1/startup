@@ -71,6 +71,7 @@ export function Play() {
 
 
 
+
     const handleSquareClick = (row, col) => {
         if (!selectedSquare) {
             if (board[row][col] !== null) {
@@ -79,39 +80,73 @@ export function Play() {
         } else {
             const newBoard = board.map((r) => [...r]);
             const movingPiece = newBoard[selectedSquare.row][selectedSquare.col];
-
-            newBoard[selectedSquare.row][selectedSquare.col] = null;
-            newBoard[row][col] = movingPiece;
-
-            const isSenteInZone = movingPiece.player === 'sente' && row <= 2;
-            const isGoteInZone = movingPiece.player === 'gote' && row >= 6;
-            const promotableTypes = ['歩', '香', '桂', '銀', '飛', '角'];
-
-            if (
-                (isSenteInZone || isGoteInZone) &&
-                promotableTypes.includes(movingPiece.type) &&
-                !movingPiece.promoted
-            ) {
-                // browser prompt, make custom later.
-                const shouldPromote = window.confirm(`Promote ${movingPiece.type}?`);
-
-                if (shouldPromote) {
-                    const promotionMap = {
-                        '歩': 'と',
-                        '香': '杏',
-                        '桂': '圭',
-                        '銀': '全',
-                        '飛': '竜',
-                        '角': '馬'
-                    };
-
-                    movingPiece.type = promotionMap[movingPiece.type];
-                    movingPiece.promoted = true;
-                }
+            const targetPiece = newBoard[row][col];
+            if (targetPiece !== null && targetPiece.player == movingPiece.player) {
+                setSelectedSquare(null);
             }
+            else {
+                if (targetPiece !== null && targetPiece.player !== movingPiece.player) {
+                    const demotionMap = {
+                        'と': '歩',
+                        '杏': '香',
+                        '圭': '桂',
+                        '全': '銀',
+                        '竜': '飛',
+                        '馬': '角'
+                    }
+                    if (targetPiece.promoted) {
+                        targetPiece.type = demotionMap[targetPiece.type];
+                    }
+                    const capturedObj = {
+                        id: `${movingPiece.player}-captured-${Date.now().toLocaleString()}`,
+                        type: targetPiece.type,
+                        promoted: false,
+                        player: movingPiece.player // Ownership flips to whoever captured it!
+                    };
+                    if (movingPiece.player === 'sente') {
+                        //setSenteCaptured(prev => [...prev, capturedObj]);
+                        console.log("SENTE CAPTUREd");
 
-            setBoard(newBoard);
-            setSelectedSquare(null);
+                    } else {
+                        //setGoteCaptured(prev => [...prev, capturedObj]);
+                        console.log("GOTE CAPTUED")
+                    }
+                }
+
+                newBoard[selectedSquare.row][selectedSquare.col] = null;
+
+                newBoard[row][col] = movingPiece;
+
+                const isSenteInZone = movingPiece.player === 'sente' && row <= 2;
+                const isGoteInZone = movingPiece.player === 'gote' && row >= 6;
+                const promotableTypes = ['歩', '香', '桂', '銀', '飛', '角'];
+
+                if (
+                    (isSenteInZone || isGoteInZone) &&
+                    promotableTypes.includes(movingPiece.type) &&
+                    !movingPiece.promoted
+                ) {
+                    // browser prompt, make custom later.
+                    const shouldPromote = window.confirm(`Promote ${movingPiece.type}?`);
+
+                    if (shouldPromote) {
+                        const promotionMap = {
+                            '歩': 'と',
+                            '香': '杏',
+                            '桂': '圭',
+                            '銀': '全',
+                            '飛': '竜',
+                            '角': '馬'
+                        };
+
+                        movingPiece.type = promotionMap[movingPiece.type];
+                        movingPiece.promoted = true;
+                    }
+                }
+
+                setBoard(newBoard);
+                setSelectedSquare(null);
+            }
         }
     };
 
