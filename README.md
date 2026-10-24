@@ -158,7 +158,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
 - [x] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
-- [ ] **All functionality implemented or mocked out** - I did complete this item for the game board functionality, but not for additional react items such as game chat, game history or database functions for an account / profile.
+- [x] **All functionality implemented or mocked out** - I completed this, adding mock functionality where necessary and adding actualy functionality on the game board.
 - [x] **Hooks** - I have implemented both useState and UseEffect for the gmae board on the plaay page.
 
 ## 🚀 Service deliverable
