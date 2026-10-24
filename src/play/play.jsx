@@ -64,6 +64,8 @@ const mockChatMessages = [
     { sender: 'You', text: 'Take your time.' }
 ];
 
+const mockMoves = ['☗P-7f', '☖ P-3d', '☗P-2f', '☖ P-8d', '☗ P-2e', '☖ P-8e'];
+
 const TURN_DURATION_SECONDS = 5;
 
 const formatTime = (seconds) => {
@@ -81,12 +83,17 @@ export function Play() {
         activePlayer: 'sente',
         secondsInTurn: 0
     });
+    const [lastMove, setLastMove] = useState(mockMoves[mockMoves.length - 1]);
+    const [moveHistory, setMoveHistory] = useState(() =>
+        mockMoves.map((notation, index) => ({ id: `initial-move-${index}`, notation }))
+    );
     const [chatMessages, setChatMessages] = useState([
         { id: 'initial-1', sender: 'You', text: 'Man, that was a terrible move!' },
         { id: 'initial-2', sender: 'Opponent', text: 'Why did you do that?' },
         { id: 'initial-3', sender: 'You', text: "I'm thinking about playing..." }
     ]);
     const chatContainerRef = useRef(null);
+    const moveHistoryRef = useRef(null);
     const boardColumnRef = useRef(null);
     const [boardColumnHeight, setBoardColumnHeight] = useState(null);
     const [capturedPieces, setCapturedPieces] = useState(() => ({
@@ -137,11 +144,30 @@ export function Play() {
     }, []);
 
     useEffect(() => {
+        let moveIndex = 0;
+        const intervalId = window.setInterval(() => {
+            const move = mockMoves[Math.floor(Math.random() * mockMoves.length)];
+            const id = `mock-move-${moveIndex++}`;
+            setLastMove(move);
+            setMoveHistory((previous) => [...previous, { id, notation: move }]);
+        }, 3000);
+
+        return () => window.clearInterval(intervalId);
+    }, []);
+
+    useEffect(() => {
         const chatContainer = chatContainerRef.current;
         if (chatContainer) {
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
     }, [chatMessages]);
+
+    useEffect(() => {
+        const moveHistoryList = moveHistoryRef.current;
+        if (moveHistoryList) {
+            moveHistoryList.scrollTop = moveHistoryList.scrollHeight;
+        }
+    }, [moveHistory]);
 
     useEffect(() => {
         const boardColumn = boardColumnRef.current;
@@ -262,28 +288,46 @@ export function Play() {
                 <h2>Play Shogi</h2>
 
                 <section id="player-info" className="play-area-sub-section">
+                    <div id="player">
+                        <h3>Player</h3>
+                    </div>
+                    <span aria-hidden="true">|</span>
                     <div id="opponent">
                         <h3>Opponent</h3>
-                        <p>Username: OpponentName</p>
-                        <p>Record: 12 W - 8 L</p>
-                    </div>
-
-                    <div id="player">
-                        <h3>You</h3>
-                        <p>Username: YourUsername</p>
-                        <p>Record: 15 W - 99 L</p>
                     </div>
                 </section>
 
                 <div id="board-chat-layout">
-                    <section id="timer-section" className="play-area-sub-section">
-                        <h3>Timer</h3>
-                        <p>Opponent: {formatTime(timerState.gote)}</p>
-                        <p>
-                            Current Turn: {timerState.activePlayer === 'sente' ? 'You' : 'Opponent'}
-                        </p>
-                        <p>You: {formatTime(timerState.sente)}</p>
-                    </section>
+                    <div
+                        id="timer-history-column"
+                        style={{ height: boardColumnHeight ? `${boardColumnHeight}px` : undefined }}
+                    >
+                        <section id="timer-section" className="play-area-sub-section">
+                            <h3>Timer</h3>
+                            <p>Opponent: {formatTime(timerState.gote)}</p>
+                            <p>
+                                Current Turn: {timerState.activePlayer === 'sente' ? 'You' : 'Opponent'}
+                            </p>
+                            <p>You: {formatTime(timerState.sente)}</p>
+                            <div id="last-move">
+                                <h3>Last Move</h3>
+                                <p>{lastMove}</p>
+                            </div>
+                        </section>
+
+                        <section id="move-notation" className="play-area-sub-section">
+                            <h3>Game History</h3>
+                            <ol
+                                id="move-history-list"
+                                ref={moveHistoryRef}
+                                aria-live="polite"
+                            >
+                                {moveHistory.map((move) => (
+                                    <li key={move.id}>{move.notation}</li>
+                                ))}
+                            </ol>
+                        </section>
+                    </div>
 
                     <div id="board-column" ref={boardColumnRef}>
                         <section id="opponent-captured" className="play-area-sub-section">
@@ -385,25 +429,6 @@ export function Play() {
                     </section>
                 </div>
 
-                <section id="game-status" className="play-area-sub-section">
-                    <div id="last-move">
-                        <h3>Last Move</h3>
-                        <p>▲ P-7f</p>
-                    </div>
-
-                </section>
-
-                <section id="move-notation" className="play-area-sub-section">
-                    <h3>Game History</h3>
-                    <ol>
-                        <li>☗ 7六歩</li>
-                        <li>☖ 3四歩</li>
-                        <li>☗ 2六歩</li>
-                        <li>☖ 8四歩</li>
-                        <li>☗ 2五歩</li>
-                        <li>☖ 8五歩</li>
-                    </ol>
-                </section>
             </section>
         </main>
     );
