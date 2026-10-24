@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import '/src/app.css';
 import { Piece } from './Piece';
 
@@ -57,9 +57,21 @@ const createInitialBoard = () => [
     ]
 ];
 
+const mockChatMessages = [
+    { sender: 'Opponent', text: 'Nice move!' },
+    { sender: 'You', text: 'Thanks, your turn.' },
+    { sender: 'Opponent', text: 'I need to think about this one.' },
+    { sender: 'You', text: 'Take your time.' }
+];
+
 export function Play() {
     const [board, setBoard] = useState(createInitialBoard);
     const [selectedSquare, setSelectedSquare] = useState(null);
+    const [chatMessages, setChatMessages] = useState([
+        { id: 'initial-1', sender: 'You', text: 'Man, that was a terrible move!' },
+        { id: 'initial-2', sender: 'Opponent', text: 'Why did you do that?' },
+        { id: 'initial-3', sender: 'You', text: "I'm thinking about playing..." }
+    ]);
     const [capturedPieces, setCapturedPieces] = useState(() => ({
         sente: [
             new Piece('sente-captured-pawn', '歩', 'sente'),
@@ -68,6 +80,20 @@ export function Play() {
         gote: [new Piece('gote-captured-pawn', '歩', 'gote')]
     }));
     const [selectedCapturedPiece, setSelectedCapturedPiece] = useState(null);
+
+    useEffect(() => {
+        let messageIndex = 0;
+        const intervalId = window.setInterval(() => {
+            const index = messageIndex++;
+            const message = mockChatMessages[index % mockChatMessages.length];
+            setChatMessages((previous) => [
+                ...previous,
+                { ...message, id: `mock-${index}` }
+            ]);
+        }, 2000);
+
+        return () => window.clearInterval(intervalId);
+    }, []);
 
     const handleCapturedPieceClick = (player, piece) => {
         setSelectedSquare(null);
@@ -280,10 +306,12 @@ export function Play() {
 
                     <section id="game-chat" className="play-area-sub-section">
                         <h3>Game Chat - One of the WebSocket uses!</h3>
-                        <div id="live-chat">
-                            <p>You: Man, that was a terrible move!</p>
-                            <p>Opponent: Why did you do that?</p>
-                            <p>You: I'm thinking about playing...</p>
+                        <div id="live-chat" aria-live="polite">
+                            {chatMessages.map((message) => (
+                                <p key={message.id}>
+                                    {message.sender}: {message.text}
+                                </p>
+                            ))}
                         </div>
                     </section>
                 </div>

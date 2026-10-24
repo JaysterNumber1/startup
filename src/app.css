@@ -250,6 +250,10 @@ footer a {
     border: 2px solid var(--brown-dark) !important;
 }
 
+#opponent-captured .shogi-board-piece button {
+    transform: rotate(180deg);
+}
+
 .captured-pieces {
     margin: 0 auto;
     display: flex;
