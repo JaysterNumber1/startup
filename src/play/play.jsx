@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import '/src/app.css';
 import { Piece } from './Piece';
 
@@ -64,14 +64,31 @@ const mockChatMessages = [
     { sender: 'You', text: 'Take your time.' }
 ];
 
+const TURN_DURATION_SECONDS = 5;
+
+const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+};
+
 export function Play() {
     const [board, setBoard] = useState(createInitialBoard);
     const [selectedSquare, setSelectedSquare] = useState(null);
+    const [timerState, setTimerState] = useState({
+        sente: 600,
+        gote: 600,
+        activePlayer: 'sente',
+        secondsInTurn: 0
+    });
     const [chatMessages, setChatMessages] = useState([
         { id: 'initial-1', sender: 'You', text: 'Man, that was a terrible move!' },
         { id: 'initial-2', sender: 'Opponent', text: 'Why did you do that?' },
         { id: 'initial-3', sender: 'You', text: "I'm thinking about playing..." }
     ]);
+    const chatContainerRef = useRef(null);
+    const boardColumnRef = useRef(null);
+    const [boardColumnHeight, setBoardColumnHeight] = useState(null);
     const [capturedPieces, setCapturedPieces] = useState(() => ({
         sente: [
             new Piece('sente-captured-pawn', '歩', 'sente'),
@@ -93,6 +110,51 @@ export function Play() {
         }, 2000);
 
         return () => window.clearInterval(intervalId);
+    }, []);
+
+    useEffect(() => {
+        const intervalId = window.setInterval(() => {
+            setTimerState((previous) => {
+                const activeTime = previous[previous.activePlayer];
+                if (activeTime === 0) {
+                    return previous;
+                }
+
+                const secondsInTurn = previous.secondsInTurn + 1;
+                const switchTurn = secondsInTurn === TURN_DURATION_SECONDS;
+                const nextPlayer = previous.activePlayer === 'sente' ? 'gote' : 'sente';
+
+                return {
+                    ...previous,
+                    [previous.activePlayer]: activeTime - 1,
+                    activePlayer: switchTurn ? nextPlayer : previous.activePlayer,
+                    secondsInTurn: switchTurn ? 0 : secondsInTurn
+                };
+            });
+        }, 1000);
+
+        return () => window.clearInterval(intervalId);
+    }, []);
+
+    useEffect(() => {
+        const chatContainer = chatContainerRef.current;
+        if (chatContainer) {
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    }, [chatMessages]);
+
+    useEffect(() => {
+        const boardColumn = boardColumnRef.current;
+        if (!boardColumn) {
+            return undefined;
+        }
+
+        const resizeObserver = new ResizeObserver(([entry]) => {
+            setBoardColumnHeight(entry.contentRect.height);
+        });
+        resizeObserver.observe(boardColumn);
+
+        return () => resizeObserver.disconnect();
     }, []);
 
     const handleCapturedPieceClick = (player, piece) => {
@@ -216,11 +278,14 @@ export function Play() {
                 <div id="board-chat-layout">
                     <section id="timer-section" className="play-area-sub-section">
                         <h3>Timer</h3>
-                        <p>You: 09:58</p>
-                        <p>Opponent: 09:42</p>
+                        <p>Opponent: {formatTime(timerState.gote)}</p>
+                        <p>
+                            Current Turn: {timerState.activePlayer === 'sente' ? 'You' : 'Opponent'}
+                        </p>
+                        <p>You: {formatTime(timerState.sente)}</p>
                     </section>
 
-                    <div id="board-column">
+                    <div id="board-column" ref={boardColumnRef}>
                         <section id="opponent-captured" className="play-area-sub-section">
                             <h4>Opponent's Captured Pieces</h4>
                             <div className="captured-pieces">
@@ -304,9 +369,13 @@ export function Play() {
                         </section>
                     </div>
 
-                    <section id="game-chat" className="play-area-sub-section">
+                    <section
+                        id="game-chat"
+                        className="play-area-sub-section"
+                        style={{ height: boardColumnHeight ? `${boardColumnHeight}px` : undefined }}
+                    >
                         <h3>Game Chat - One of the WebSocket uses!</h3>
-                        <div id="live-chat" aria-live="polite">
+                        <div id="live-chat" ref={chatContainerRef} aria-live="polite">
                             {chatMessages.map((message) => (
                                 <p key={message.id}>
                                     {message.sender}: {message.text}
@@ -322,10 +391,6 @@ export function Play() {
                         <p>▲ P-7f</p>
                     </div>
 
-                    <div id="turn">
-                        <h3>Turn:</h3>
-                        <p>Your Turn</p>
-                    </div>
                 </section>
 
                 <section id="move-notation" className="play-area-sub-section">
