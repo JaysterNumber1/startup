@@ -34,7 +34,7 @@ export class Piece {
             '馬': '角'
         };
 
-        if (demotionMap[this.type] && !this.promoted) {
+        if (demotionMap[this.type] && this.promoted) {
             this.type = demotionMap[this.type];
             this.promoted = false;
         }
@@ -44,6 +44,5 @@ export class Piece {
     capture(newOwner) {
         this.demote();
         this.player = newOwner;
-        this.id = `${this.player}-captured-${this.type}-${Date.now().toLocaleString()}`
     }
 }

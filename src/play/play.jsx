@@ -60,38 +60,86 @@ const createInitialBoard = () => [
 export function Play() {
     const [board, setBoard] = useState(createInitialBoard);
     const [selectedSquare, setSelectedSquare] = useState(null);
+    const [capturedPieces, setCapturedPieces] = useState(() => ({
+        sente: [
+            new Piece('sente-captured-pawn', '歩', 'sente'),
+            new Piece('sente-captured-silver', '銀', 'sente')
+        ],
+        gote: [new Piece('gote-captured-pawn', '歩', 'gote')]
+    }));
+    const [selectedCapturedPiece, setSelectedCapturedPiece] = useState(null);
 
-
-
+    const handleCapturedPieceClick = (player, piece) => {
+        setSelectedSquare(null);
+        setSelectedCapturedPiece((selected) =>
+            selected?.id === piece.id ? null : { id: piece.id, player }
+        );
+    };
 
     const handleSquareClick = (row, col) => {
+        const targetPiece = board[row][col];
+
+        if (selectedCapturedPiece) {
+            if (targetPiece !== null) {
+                if (targetPiece.player === selectedCapturedPiece.player) {
+                    setSelectedCapturedPiece(null);
+                    setSelectedSquare({ row, col });
+                }
+                return;
+            }
+
+            const hand = capturedPieces[selectedCapturedPiece.player];
+            const pieceToDrop = hand.find((piece) => piece.id === selectedCapturedPiece.id);
+            if (!pieceToDrop) {
+                setSelectedCapturedPiece(null);
+                return;
+            }
+
+            const newBoard = board.map((r) => [...r]);
+            newBoard[row][col] = new Piece(
+                pieceToDrop.id,
+                pieceToDrop.type,
+                pieceToDrop.player,
+                pieceToDrop.promoted
+            );
+            setBoard(newBoard);
+            setCapturedPieces((previous) => ({
+                ...previous,
+                [selectedCapturedPiece.player]: previous[selectedCapturedPiece.player].filter(
+                    (piece) => piece.id !== selectedCapturedPiece.id
+                )
+            }));
+            setSelectedCapturedPiece(null);
+            return;
+        }
+
         if (!selectedSquare) {
-            if (board[row][col] !== null) {
+            if (targetPiece !== null) {
                 setSelectedSquare({ row, col });
             }
         } else {
             const newBoard = board.map((r) => [...r]);
             const movingPiece = newBoard[selectedSquare.row][selectedSquare.col];
-            const targetPiece = newBoard[row][col];
 
             //deselect if own piece (either same or other owned)
-            if (targetPiece !== null && targetPiece.player == movingPiece.player) {
+            if (targetPiece !== null && targetPiece.player === movingPiece.player) {
                 setSelectedSquare(null);
                 return;
             }
 
             //if capturing opponent's piece
             if (targetPiece !== null && targetPiece.player !== movingPiece.player) {
-                targetPiece.capture(movingPiece.player)
-
-                if (movingPiece.player === 'sente') {
-                    //setSenteCaptured(prev => [...prev, capturedObj]);
-                    console.log("SENTE CAPTUREd");
-
-                } else {
-                    //setGoteCaptured(prev => [...prev, capturedObj]);
-                    console.log("GOTE CAPTUED")
-                }
+                const capturedPiece = new Piece(
+                    targetPiece.id,
+                    targetPiece.type,
+                    targetPiece.player,
+                    targetPiece.promoted
+                );
+                capturedPiece.capture(movingPiece.player);
+                setCapturedPieces((previous) => ({
+                    ...previous,
+                    [movingPiece.player]: [...previous[movingPiece.player], capturedPiece]
+                }));
             }
 
             newBoard[selectedSquare.row][selectedSquare.col] = null;
@@ -139,65 +187,108 @@ export function Play() {
                     </div>
                 </section>
 
-                <section id="board-section" className="play-area-sub-section">
-                    <h3>Board - WebSocket to keep playing!</h3>
-
-                    <table className="shogi-board">
-                        <tbody>
-                            {board.map((row, rowIndex) => (
-                                <tr key={rowIndex}>
-                                    {row.map((cell, colIndex) => {
-                                        const isSelected =
-                                            selectedSquare?.row === rowIndex &&
-                                            selectedSquare?.col === colIndex;
-
-                                        return (
-                                            <td key={colIndex}>
-                                                <button
-                                                    className={isSelected ? 'selected' : ''}
-                                                    onClick={() => handleSquareClick(rowIndex, colIndex)}
-                                                >
-                                                    {cell ? (
-                                                        <span
-                                                            style={{
-                                                                display: 'inline-block',
-                                                                transform:
-                                                                    cell.player === 'gote'
-                                                                        ? 'rotate(180deg)'
-                                                                        : 'none'
-                                                            }}
-                                                        >
-                                                            {cell.type}
-                                                        </span>
-                                                    ) : (
-                                                        ''
-                                                    )}
-                                                </button>
-                                            </td>
-                                        );
-                                    })}
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </section>
-
-                <section id="game-chat" className="play-area-sub-section">
-                    <div id="live-chat">
-                        <h3>Game Chat - One of the WebSocket uses!</h3>
-                        <p>You: Man, that was a terrible move!</p>
-                        <p>Opponent: Why did you do that?</p>
-                        <p>You: I'm thinking about playing...</p>
-                    </div>
-                </section>
-
-                <section id="game-status" className="play-area-sub-section">
-                    <div id="timer">
+                <div id="board-chat-layout">
+                    <section id="timer-section" className="play-area-sub-section">
                         <h3>Timer</h3>
                         <p>You: 09:58</p>
                         <p>Opponent: 09:42</p>
+                    </section>
+
+                    <div id="board-column">
+                        <section id="opponent-captured" className="play-area-sub-section">
+                            <h4>Opponent's Captured Pieces</h4>
+                            <div className="captured-pieces">
+                                {capturedPieces.gote.map((piece) => (
+                                    <div className="shogi-board-piece" key={piece.id}>
+                                        <button
+                                            className={
+                                                selectedCapturedPiece?.id === piece.id ? 'selected' : ''
+                                            }
+                                            aria-label={`Select opponent's captured ${piece.type}`}
+                                            onClick={() => handleCapturedPieceClick('gote', piece)}
+                                        >
+                                            {piece.type}
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+
+                        <section id="board-section" className="play-area-sub-section">
+                            <h3>Board - WebSocket to keep playing!</h3>
+
+                            <table className="shogi-board">
+                                <tbody>
+                                    {board.map((row, rowIndex) => (
+                                        <tr key={rowIndex}>
+                                            {row.map((cell, colIndex) => {
+                                                const isSelected =
+                                                    selectedSquare?.row === rowIndex &&
+                                                    selectedSquare?.col === colIndex;
+
+                                                return (
+                                                    <td key={colIndex}>
+                                                        <button
+                                                            className={isSelected ? 'selected' : ''}
+                                                            onClick={() => handleSquareClick(rowIndex, colIndex)}
+                                                        >
+                                                            {cell ? (
+                                                                <span
+                                                                    style={{
+                                                                        display: 'inline-block',
+                                                                        transform:
+                                                                            cell.player === 'gote'
+                                                                                ? 'rotate(180deg)'
+                                                                                : 'none'
+                                                                    }}
+                                                                >
+                                                                    {cell.type}
+                                                                </span>
+                                                            ) : (
+                                                                ''
+                                                            )}
+                                                        </button>
+                                                    </td>
+                                                );
+                                            })}
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </section>
+
+                        <section id="player-captured" className="play-area-sub-section">
+                            <h4>Your Captured Pieces</h4>
+                            <div className="captured-pieces">
+                                {capturedPieces.sente.map((piece) => (
+                                    <div className="shogi-board-piece" key={piece.id}>
+                                        <button
+                                            className={
+                                                selectedCapturedPiece?.id === piece.id ? 'selected' : ''
+                                            }
+                                            aria-label={`Select your captured ${piece.type}`}
+                                            onClick={() => handleCapturedPieceClick('sente', piece)}
+                                        >
+                                            {piece.type}
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                            <p>Select a captured piece to replay it onto the board.</p>
+                        </section>
                     </div>
 
+                    <section id="game-chat" className="play-area-sub-section">
+                        <h3>Game Chat - One of the WebSocket uses!</h3>
+                        <div id="live-chat">
+                            <p>You: Man, that was a terrible move!</p>
+                            <p>Opponent: Why did you do that?</p>
+                            <p>You: I'm thinking about playing...</p>
+                        </div>
+                    </section>
+                </div>
+
+                <section id="game-status" className="play-area-sub-section">
                     <div id="last-move">
                         <h3>Last Move</h3>
                         <p>▲ P-7f</p>
@@ -207,33 +298,6 @@ export function Play() {
                         <h3>Turn:</h3>
                         <p>Your Turn</p>
                     </div>
-                </section>
-
-                <section id="captured-pieces" className="play-area-sub-section">
-                    <h3>Captured Pieces</h3>
-
-                    <div id="player-captured">
-                        <h4>Your Captured Pieces</h4>
-                        <div className="captured-pieces">
-                            <div className="shogi-board-piece">
-                                <button>歩</button>
-                            </div>
-                            <div className="shogi-board-piece">
-                                <button>銀</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="opponent-captured">
-                        <h4>Opponent's Captured Pieces</h4>
-                        <div className="captured-pieces">
-                            <div className="shogi-board-piece">
-                                <button>歩</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <p>Select a captured piece to replay it onto the board.</p>
                 </section>
 
                 <section id="move-notation" className="play-area-sub-section">
