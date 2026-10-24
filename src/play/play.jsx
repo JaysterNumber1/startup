@@ -66,7 +66,7 @@ const mockChatMessages = [
 
 const mockMoves = ['☗P-7f', '☖ P-3d', '☗P-2f', '☖ P-8d', '☗ P-2e', '☖ P-8e'];
 
-const TURN_DURATION_SECONDS = 5;
+const turnDuration = 5;
 
 const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -128,7 +128,7 @@ export function Play() {
                 }
 
                 const secondsInTurn = previous.secondsInTurn + 1;
-                const switchTurn = secondsInTurn === TURN_DURATION_SECONDS;
+                const switchTurn = secondsInTurn === turnDuration;
                 const nextPlayer = previous.activePlayer === 'sente' ? 'gote' : 'sente';
 
                 return {
