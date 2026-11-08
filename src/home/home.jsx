@@ -1,9 +1,11 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { Authenticated } from '../authenticated';
+import { Login } from '../login';
 
-export function Home() {
+export function Home({ user, onUserChange, authLoading, authError }) {
     return (
-        <main class="container py-5">
+        <main className="container py-5">
 
             <section>
                 <h2>Play Shogi Online</h2>
@@ -14,23 +16,18 @@ export function Home() {
                 </p>
             </section>
 
-            <section>
-                <h2>Login</h2>
+            {authLoading ? (
+                <section><p aria-live="polite">Checking sign-in status...</p></section>
+            ) : user ? (
+                <section>
+                    <h2>Account</h2>
+                    <Authenticated userName={user.email} onLogout={() => onUserChange(null)} />
+                </section>
+            ) : (
+                <Login onLogin={onUserChange} />
+            )}
 
-                <form action="account.html" method="get">
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" required placeholder="Enter Username" />
-
-                    <br />
-
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required placeholder="Enter Password" />
-
-                    <br />
-
-                    <button type="submit">Log In</button>
-                </form>
-            </section>
+            {authError && <p role="alert">{authError}</p>}
 
             <section>
                 <h2>Learn to Play</h2>

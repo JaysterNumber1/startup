@@ -167,12 +167,12 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 - [x] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
 - [x] **Node.js/Express HTTP service** - I did complete this part of the deliverable, using the simon as a jumping point.
-- [x] **Static middleware for frontend** - I did complete this part of the deliverable, using the simon as a jumping point.
-- [ ] **Calls to third party endpoints** - I did not complete this part of the deliverable.
-- [ ] **Backend service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Frontend calls service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Supports registration, login, logout, and restricted endpoint** - I did not complete this part of the deliverable.
-- [x] **Uses BCrypt to hash passwords** - I did  complete this part of the deliverable, using the simon as a jumping point.
+- [x] **Static middleware for frontend** - I did complete this part of the deliverable, using the simon as a jumping point to implement express for the frontend.
+- [x] **Calls to third party endpoints** - I did complete this part of the deliverable. The animechan API is sucessfully accessed and proves a quote.
+- [x] **Backend service endpoints** - I did complete this part of the deliverable. Uses Quote and the login/logout endpoints. 
+- [x] **Frontend calls service endpoints** - I did complete this part of the deliverable. Uses the anime api call and the authorization endpoints
+- [x] **Supports registration, login, logout, and restricted endpoint** - I did complete this part of the deliverable, using the simon as a code base and then specifying to my codebase.
+- [x] **Uses BCrypt to hash passwords** - I did complete this part of the deliverable, using the simon as a jumping point.
 
 ## 🚀 DB deliverable
 

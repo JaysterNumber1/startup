@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
 import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
@@ -8,9 +8,39 @@ import { Play } from './play/play';
 import { Rules } from './rules/rules';
 import { History } from './history/history';
 import { ScrollToTop } from './scrollToTop';
+import { getCurrentUser } from './auth';
 
 export default function App() {
     const [isNavigationExpanded, setIsNavigationExpanded] = useState(false);
+    const [user, setUser] = useState(null);
+    const [authLoading, setAuthLoading] = useState(true);
+    const [authError, setAuthError] = useState('');
+
+    useEffect(() => {
+        let isMounted = true;
+
+        getCurrentUser()
+            .then((currentUser) => {
+                if (isMounted) {
+                    setUser(currentUser);
+                }
+            })
+            .catch((error) => {
+                console.error('Unable to check the current login:', error);
+                if (isMounted) {
+                    setAuthError('Unable to check your sign-in status. Please refresh the page.');
+                }
+            })
+            .finally(() => {
+                if (isMounted) {
+                    setAuthLoading(false);
+                }
+            });
+
+        return () => {
+            isMounted = false;
+        };
+    }, []);
 
     return (
         <BrowserRouter>
@@ -67,7 +97,18 @@ export default function App() {
                 </header>
 
                 <Routes>
-                    <Route path='/' element={<Home />} exact />
+                    <Route
+                        path='/'
+                        element={
+                            <Home
+                                user={user}
+                                onUserChange={setUser}
+                                authLoading={authLoading}
+                                authError={authError}
+                            />
+                        }
+                        exact
+                    />
                     <Route path='/account' element={<Account />} />
                     <Route path='/play' element={<Play />} />
                     <Route path='/rules' element={<Rules />} />

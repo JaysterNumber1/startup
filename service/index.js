@@ -46,6 +46,11 @@ apiRouter.post('/auth/login', async (req, res) => {
     return res.send({ email: user.email });
 });
 
+apiRouter.get('/auth/me', verifyAuth, (req, res) => {
+    const user = findUser('token', req.cookies[authCookieName]);
+    return res.send({ email: user.email });
+});
+
 apiRouter.delete('/auth/logout', (req, res) => {
     const user = findUser('token', req.cookies[authCookieName]);
     if (user) {
