@@ -16,7 +16,17 @@ async function requestAuth(path, options = {}, allowUnauthorized = false) {
         return null;
     }
 
-    const result = await response.json();
+    const responseText = await response.text();
+    let result;
+    try {
+        result = responseText ? JSON.parse(responseText) : {};
+    } catch {
+        if (response.status === 502) {
+            throw new Error('The backend server is not running. Start it with `node service/index.js`.');
+        }
+        throw new Error(`The server returned an unexpected response (${response.status}).`);
+    }
+
     if (!response.ok) {
         throw new Error(result.msg || 'Authentication request failed');
     }

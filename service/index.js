@@ -99,7 +99,7 @@ apiRouter.use((_req, res) => {
     res.status(404).send({ msg: 'Not found' });
 });
 
-const frontendPath = path.resolve(__dirname, '../dist');
+const frontendPath = path.join(__dirname, 'public');
 app.use(express.static(frontendPath));
 app.get(/.*/, (_req, res, next) => {
     res.sendFile(path.join(frontendPath, 'index.html'), (err) => {
