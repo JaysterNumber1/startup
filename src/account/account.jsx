@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const mockMatchDatabase = [
     {
@@ -24,14 +24,6 @@ const mockMatchDatabase = [
     }
 ];
 
-function getQuote() {
-    // This will be replaced with a third-party service call.
-    return {
-        quote: 'A journey of a thousand miles begins with a single step.',
-        character: 'Lao Tzu'
-    };
-}
-
 function getMatchFromMockDatabase(matchId) {
     return mockMatchDatabase.find((savedMatch) => savedMatch.id === matchId);
 }
@@ -51,7 +43,36 @@ function showMatchPlayByPlay(matchId) {
 
 export function Account() {
     const [gamePieceStyle, setGamePieceStyle] = useState('cartoony');
-    const quote = getQuote();
+    const [quote, setQuote] = useState(null);
+    const [quoteError, setQuoteError] = useState('');
+
+    useEffect(() => {
+        const controller = new AbortController();
+
+        async function loadQuote() {
+            try {
+                const response = await fetch('/api/quote', { signal: controller.signal });
+                if (!response.ok) {
+                    throw new Error(`Quote request failed (${response.status})`);
+                }
+
+                const result = await response.json();
+                if (typeof result.quote !== 'string' || typeof result.character !== 'string') {
+                    throw new Error('Quote service returned invalid data');
+                }
+
+                setQuote(result);
+            } catch (error) {
+                if (error.name !== 'AbortError') {
+                    console.error('Unable to load an anime quote:', error);
+                    setQuoteError('Unable to load a quote right now. Please try again later.');
+                }
+            }
+        }
+
+        loadQuote();
+        return () => controller.abort();
+    }, []);
 
     const handleGamePieceStyleChange = (event) => {
         setGamePieceStyle(event.target.value);
@@ -110,9 +131,16 @@ export function Account() {
                 <h3>Random Anime Quote</h3>
 
                 <div id="quote-container">
-                    <p id="quote">
-                        "{quote.quote}" — {quote.character}
-                    </p>
+                    {quoteError ? (
+                        <p role="alert">{quoteError}</p>
+                    ) : quote ? (
+                        <p id="quote">
+                            "{quote.quote}" — {quote.character}
+                            {quote.anime && ` (${quote.anime})`}
+                        </p>
+                    ) : (
+                        <p aria-live="polite">Loading quote...</p>
+                    )}
                 </div>
 
             </section>

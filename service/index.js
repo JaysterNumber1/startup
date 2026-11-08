@@ -60,6 +60,27 @@ apiRouter.get('/scores', verifyAuth, (_req, res) => {
     res.send(scores);
 });
 
+apiRouter.get('/quote', async (_req, res) => {
+    const response = await fetch('https://api.animechan.io/v1/quotes/random');
+
+    if (!response.ok) {
+        return res.status(502).send({ msg: 'Quote service is unavailable' });
+    }
+
+    const result = await response.json();
+    const data = result.data;
+
+    if (!data?.content || !data?.character?.name) {
+        return res.status(502).send({ msg: 'Quote service returned invalid data' });
+    }
+
+    return res.send({
+        quote: data.content,
+        character: data.character.name,
+        anime: data.anime?.name ?? '',
+    });
+});
+
 apiRouter.post('/score', verifyAuth, (req, res) => {
     if (!req.body || !Number.isFinite(req.body.score)) {
         return res.status(400).send({ msg: 'A numeric score is required' });
@@ -135,7 +156,7 @@ function setAuthCookie(res, user) {
     });
 }
 
-const port = process.argv[2] || process.env.PORT || 3000;
+const port = process.argv.length > 2 ? process.argv[2] : 4000;
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
 });
