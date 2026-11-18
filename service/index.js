@@ -3,11 +3,18 @@ const cookieParser = require('cookie-parser');
 const bcrypt = require('bcryptjs');
 const uuid = require('uuid');
 const path = require('node:path');
+const {
+    getUser,
+    getUserByToken,
+    addUser,
+    updateUser,
+    updateUserRemoveAuth,
+    getRecentGames,
+} = require('./database');
 
 const app = express();
 const apiRouter = express.Router();
 const authCookieName = 'token';
-const users = [];
 let scores = [];
 
 app.use(express.json());
@@ -22,12 +29,13 @@ apiRouter.post('/auth/create', async (req, res) => {
     }
 
     const normalizedEmail = email.trim();
-    if (findUser('email', normalizedEmail)) {
+    if (await getUser(normalizedEmail)) {
         return res.status(409).send({ msg: 'Existing user' });
     }
 
     const user = await createUser(normalizedEmail, password);
-    setAuthCookie(res, user);
+    await addUser(user);
+    await setAuthCookie(res, user);
     return res.send({ email: user.email });
 });
 
@@ -37,24 +45,23 @@ apiRouter.post('/auth/login', async (req, res) => {
         return res.status(400).send({ msg: 'Email and password are required' });
     }
 
-    const user = findUser('email', email.trim());
+    const user = await getUser(email.trim());
     if (!user || !(await bcrypt.compare(password, user.password))) {
         return res.status(401).send({ msg: 'Unauthorized' });
     }
 
-    setAuthCookie(res, user);
+    await setAuthCookie(res, user);
     return res.send({ email: user.email });
 });
 
 apiRouter.get('/auth/me', verifyAuth, (req, res) => {
-    const user = findUser('token', req.cookies[authCookieName]);
-    return res.send({ email: user.email });
+    return res.send({ email: req.user.email });
 });
 
-apiRouter.delete('/auth/logout', (req, res) => {
-    const user = findUser('token', req.cookies[authCookieName]);
+apiRouter.delete('/auth/logout', async (req, res) => {
+    const user = await getUserByToken(req.cookies[authCookieName]);
     if (user) {
-        delete user.token;
+        await updateUserRemoveAuth(user);
     }
 
     res.clearCookie(authCookieName);
@@ -66,7 +73,6 @@ apiRouter.get('/scores', verifyAuth, (_req, res) => {
 });
 
 apiRouter.get('/games/history', verifyAuth, async (_req, res) => {
-    const { getRecentGames } = require('./database');
     res.send(await getRecentGames());
 });
 
@@ -122,10 +128,12 @@ app.use((err, _req, res, _next) => {
     });
 });
 
-function verifyAuth(req, res, next) {
-    if (!findUser('token', req.cookies[authCookieName])) {
+async function verifyAuth(req, res, next) {
+    const user = await getUserByToken(req.cookies[authCookieName]);
+    if (!user) {
         return res.status(401).send({ msg: 'Unauthorized' });
     }
+    req.user = user;
     return next();
 }
 
@@ -141,24 +149,16 @@ function updateScores(newScore) {
 }
 
 async function createUser(email, password) {
-    const user = {
+    return {
         email,
         password: await bcrypt.hash(password, 10),
         token: null,
     };
-    users.push(user);
-    return user;
 }
 
-function findUser(field, value) {
-    if (!value) {
-        return null;
-    }
-    return users.find((user) => user[field] === value) ?? null;
-}
-
-function setAuthCookie(res, user) {
+async function setAuthCookie(res, user) {
     user.token = uuid.v4();
+    await updateUser(user);
     res.cookie(authCookieName, user.token, {
         secure: process.env.NODE_ENV === 'production',
         httpOnly: true,
