@@ -63,3 +63,10 @@ export function deleteAccount() {
 export function getRecentGames() {
     return requestAuth('/api/games/history');
 }
+
+export function saveGameHistory(game) {
+    return requestAuth('/api/games/history', {
+        method: 'POST',
+        body: JSON.stringify(game),
+    });
+}

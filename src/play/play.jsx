@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import '/src/app.css';
 import { Piece } from './Piece';
+import { saveGameHistory } from '../auth';
 
 const createInitialBoard = () => [
     // Row 0: Gote back row
@@ -74,9 +75,13 @@ const formatTime = (seconds) => {
     return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
 };
 
-export function Play() {
+export function Play({ user }) {
     const [board, setBoard] = useState(createInitialBoard);
     const [selectedSquare, setSelectedSquare] = useState(null);
+    const [gameResult, setGameResult] = useState(null);
+    const [historyError, setHistoryError] = useState('');
+    const [isSavingHistory, setIsSavingHistory] = useState(false);
+    const gameFinishedRef = useRef(false);
     const [timerState, setTimerState] = useState({
         sente: 600,
         gote: 600,
@@ -184,6 +189,9 @@ export function Play() {
     }, []);
 
     const handleCapturedPieceClick = (player, piece) => {
+        if (gameFinishedRef.current) {
+            return;
+        }
         setSelectedSquare(null);
         setSelectedCapturedPiece((selected) =>
             selected?.id === piece.id ? null : { id: piece.id, player }
@@ -191,6 +199,10 @@ export function Play() {
     };
 
     const handleSquareClick = (row, col) => {
+        if (gameFinishedRef.current) {
+            return;
+        }
+
         const targetPiece = board[row][col];
 
         if (selectedCapturedPiece) {
@@ -243,6 +255,7 @@ export function Play() {
 
             //if capturing opponent's piece
             if (targetPiece !== null && targetPiece.player !== movingPiece.player) {
+                const capturedKing = targetPiece.type === '王' || targetPiece.type === '玉';
                 const capturedPiece = new Piece(
                     targetPiece.id,
                     targetPiece.type,
@@ -254,6 +267,20 @@ export function Play() {
                     ...previous,
                     [movingPiece.player]: [...previous[movingPiece.player], capturedPiece]
                 }));
+
+                if (capturedKing) {
+                    gameFinishedRef.current = true;
+                    const winner = movingPiece.player === 'sente' ? 'you' : 'opponent';
+                    setGameResult(winner);
+                    setSelectedSquare(null);
+
+                    if (user?.email) {
+                        setIsSavingHistory(true);
+                        saveGameHistory({ opponent: 'Opponent', winner })
+                            .catch((error) => setHistoryError(error.message))
+                            .finally(() => setIsSavingHistory(false));
+                    }
+                }
             }
 
             newBoard[selectedSquare.row][selectedSquare.col] = null;
@@ -286,6 +313,14 @@ export function Play() {
         <main className="container py-5">
             <section id="play-area">
                 <h2>Play Shogi</h2>
+                {gameResult && (
+                    <p role="status">
+                        Game over. {gameResult === 'you' ? 'You won!' : 'Opponent won!'}
+                        {isSavingHistory && ' Saving game history...'}
+                        {!user?.email && ' Sign in to save game history.'}
+                        {historyError && ` Unable to save game history: ${historyError}`}
+                    </p>
+                )}
 
                 <section id="player-info" className="play-area-sub-section">
                     <div id="player">

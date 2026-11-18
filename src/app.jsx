@@ -119,7 +119,7 @@ export default function App() {
                             />
                         }
                     />
-                    <Route path='/play' element={<Play />} />
+                    <Route path='/play' element={<Play user={user} />} />
                     <Route path='/rules' element={<Rules />} />
                     <Route path='/history' element={<History />} />
                     <Route path='*' element={<NotFound />} />

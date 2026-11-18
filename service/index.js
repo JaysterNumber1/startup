@@ -10,6 +10,7 @@ const {
     deleteUser,
     updateUser,
     updateUserRemoveAuth,
+    addGameHistory,
     getRecentGames,
 } = require('./database');
 
@@ -83,8 +84,29 @@ apiRouter.get('/scores', verifyAuth, (_req, res) => {
     res.send(scores);
 });
 
-apiRouter.get('/games/history', verifyAuth, async (_req, res) => {
-    res.send(await getRecentGames());
+apiRouter.post('/games/history', verifyAuth, async (req, res) => {
+    const { opponent, winner } = req.body ?? {};
+    if (
+        typeof opponent !== 'string'
+        || !opponent.trim()
+        || opponent.trim().length > 100
+        || !['you', 'opponent'].includes(winner)
+    ) {
+        return res.status(400).send({ msg: 'A valid opponent and winner are required' });
+    }
+
+    const game = {
+        email: req.user.email,
+        opponent: opponent.trim(),
+        winner: winner === 'you' ? req.user.email : opponent.trim(),
+        playedAt: new Date(),
+    };
+    const result = await addGameHistory(game);
+    return res.status(201).send({ ...game, _id: result.insertedId });
+});
+
+apiRouter.get('/games/history', verifyAuth, async (req, res) => {
+    res.send(await getRecentGames(req.user.email));
 });
 
 apiRouter.get('/quote', async (_req, res) => {

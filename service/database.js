@@ -47,10 +47,10 @@ async function addGameHistory(game) {
     return gameCollection.insertOne(game);
 }
 
-async function getRecentGames() {
+async function getRecentGames(email) {
     return gameCollection
-        .find({})
-        .sort({ _id: -1 })
+        .find({ email })
+        .sort({ playedAt: -1 })
         .limit(5)
         .toArray();
 }
