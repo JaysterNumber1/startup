@@ -246,6 +246,7 @@ export function Play({ user }) {
         } else {
             const newBoard = board.map((r) => [...r]);
             const movingPiece = newBoard[selectedSquare.row][selectedSquare.col];
+            const capturedKing = targetPiece?.type === '王' || targetPiece?.type === '玉';
 
             //deselect if own piece (either same or other owned)
             if (targetPiece !== null && targetPiece.player === movingPiece.player) {
@@ -255,7 +256,6 @@ export function Play({ user }) {
 
             //if capturing opponent's piece
             if (targetPiece !== null && targetPiece.player !== movingPiece.player) {
-                const capturedKing = targetPiece.type === '王' || targetPiece.type === '玉';
                 const capturedPiece = new Piece(
                     targetPiece.id,
                     targetPiece.type,
@@ -292,6 +292,7 @@ export function Play({ user }) {
             const promotableTypes = ['歩', '香', '桂', '銀', '飛', '角'];
 
             if (
+                !capturedKing &&
                 (isSenteInZone || isGoteInZone) &&
                 promotableTypes.includes(movingPiece.type) &&
                 !movingPiece.promoted
@@ -315,7 +316,7 @@ export function Play({ user }) {
                 <h2>Play Shogi</h2>
                 {gameResult && (
                     <p role="status">
-                        Game over. {gameResult === 'you' ? 'You won!' : 'Opponent won!'}
+                        {gameResult === 'you' ? 'You won!' : 'You lost!'}
                         {isSavingHistory && ' Saving game history...'}
                         {!user?.email && ' Sign in to save game history.'}
                         {historyError && ` Unable to save game history: ${historyError}`}
