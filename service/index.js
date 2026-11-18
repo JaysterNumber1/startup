@@ -65,6 +65,11 @@ apiRouter.get('/scores', verifyAuth, (_req, res) => {
     res.send(scores);
 });
 
+apiRouter.get('/games/history', verifyAuth, async (_req, res) => {
+    const { getRecentGames } = require('./database');
+    res.send(await getRecentGames());
+});
+
 apiRouter.get('/quote', async (_req, res) => {
     const response = await fetch('https://api.animechan.io/v1/quotes/random');
 

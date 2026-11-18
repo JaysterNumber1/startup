@@ -2,3 +2,5 @@
 deployReact.sh
 node_modules/
 dist/
+deployService.sh
+dbConfig.json

@@ -1,8 +1,49 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { getRecentGames } from '../auth';
 
 export function History() {
+    const [games, setGames] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        getRecentGames()
+            .then(setGames)
+            .catch((requestError) => setError(requestError.message))
+            .finally(() => setIsLoading(false));
+    }, []);
+
     return (
-        <main class="container py-5">
+        <main className="container py-5">
+            <section>
+                <h2>Recent Games</h2>
+                {isLoading && <p>Loading games...</p>}
+                {error && <p role="alert">{error}</p>}
+                {!isLoading && !error && games.length === 0 && (
+                    <p>No games have been recorded yet.</p>
+                )}
+                {!isLoading && !error && games.length > 0 && (
+                    <ol>
+                        {games.map((game, index) => (
+                            <li key={game._id ?? index}>
+                                <strong>Game {index + 1}</strong>
+                                <dl>
+                                    {Object.entries(game).map(([field, value]) => (
+                                        <React.Fragment key={field}>
+                                            <dt>{field}</dt>
+                                            <dd>
+                                                {typeof value === 'object' && value !== null
+                                                    ? JSON.stringify(value)
+                                                    : String(value)}
+                                            </dd>
+                                        </React.Fragment>
+                                    ))}
+                                </dl>
+                            </li>
+                        ))}
+                    </ol>
+                )}
+            </section>
 
             <section>
                 <h2>What is Shogi?</h2>

@@ -55,3 +55,7 @@ export function createAccount(email, password) {
 export function logout() {
     return requestAuth('/api/auth/logout', { method: 'DELETE' });
 }
+
+export function getRecentGames() {
+    return requestAuth('/api/games/history');
+}
