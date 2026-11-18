@@ -13,7 +13,7 @@ const gameCollection = db.collection('game');
         await db.command({ ping: 1 });
         console.log(`Connect to database`);
     } catch (ex) {
-        console.log(`Unable to connect to database with ${url} because ${ex.message}`);
+        console.error(`Unable to connect to database (${ex.name}). Check the connection settings.`);
         process.exit(1);
     }
 })();
