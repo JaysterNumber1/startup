@@ -36,7 +36,7 @@ async function deleteUser(email) {
 
 async function updateUser(user) {
     const { _id, ...userData } = user;
-    await userCollection.updateOne({ email: user.email }, { $set: userData });
+    await userCollection.updateOne({ _id }, { $set: userData });
 }
 
 async function updateUserRemoveAuth(user) {
