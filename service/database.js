@@ -30,6 +30,10 @@ async function addUser(user) {
     await userCollection.insertOne(user);
 }
 
+async function deleteUser(email) {
+    return userCollection.deleteOne({ email });
+}
+
 async function updateUser(user) {
     const { _id, ...userData } = user;
     await userCollection.updateOne({ email: user.email }, { $set: userData });
@@ -55,6 +59,7 @@ module.exports = {
     getUser,
     getUserByToken,
     addUser,
+    deleteUser,
     updateUser,
     updateUserRemoveAuth,
     addGameHistory,

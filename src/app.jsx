@@ -111,7 +111,13 @@ export default function App() {
                     />
                     <Route
                         path='/account'
-                        element={<Account user={user} authLoading={authLoading} />}
+                        element={
+                            <Account
+                                user={user}
+                                onUserChange={setUser}
+                                authLoading={authLoading}
+                            />
+                        }
                     />
                     <Route path='/play' element={<Play />} />
                     <Route path='/rules' element={<Rules />} />

@@ -7,6 +7,7 @@ const {
     getUser,
     getUserByToken,
     addUser,
+    deleteUser,
     updateUser,
     updateUserRemoveAuth,
     getRecentGames,
@@ -56,6 +57,16 @@ apiRouter.post('/auth/login', async (req, res) => {
 
 apiRouter.get('/auth/me', verifyAuth, (req, res) => {
     return res.send({ email: req.user.email });
+});
+
+apiRouter.delete('/account', verifyAuth, async (req, res) => {
+    const result = await deleteUser(req.user.email);
+    if (result.deletedCount !== 1) {
+        return res.status(404).send({ msg: 'Account not found' });
+    }
+
+    res.clearCookie(authCookieName);
+    return res.status(204).end();
 });
 
 apiRouter.delete('/auth/logout', async (req, res) => {

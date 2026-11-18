@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { deleteAccount } from '../auth';
 
 const mockMatchDatabase = [
     {
@@ -41,10 +42,12 @@ function showMatchPlayByPlay(matchId) {
     );
 }
 
-export function Account({ user, authLoading }) {
+export function Account({ user, onUserChange, authLoading }) {
     const [gamePieceStyle, setGamePieceStyle] = useState('cartoony');
     const [quote, setQuote] = useState(null);
     const [quoteError, setQuoteError] = useState('');
+    const [deleteError, setDeleteError] = useState('');
+    const [isDeleting, setIsDeleting] = useState(false);
 
     useEffect(() => {
         const controller = new AbortController();
@@ -79,6 +82,27 @@ export function Account({ user, authLoading }) {
         window.alert('Your game piece style preference has been updated!');
     };
 
+    async function handleDeleteAccount() {
+        if (!window.confirm('Are you sure you want to delete your account?')) {
+            return;
+        }
+
+        if (!window.confirm('This permanently deletes your account. This cannot be undone. Continue?')) {
+            return;
+        }
+
+        setDeleteError('');
+        setIsDeleting(true);
+        try {
+            await deleteAccount();
+            onUserChange(null);
+        } catch (error) {
+            setDeleteError(error.message);
+        } finally {
+            setIsDeleting(false);
+        }
+    }
+
     return (
         <main className="container py-5">
             <section id="account-info">
@@ -91,7 +115,18 @@ export function Account({ user, authLoading }) {
                         : `Email: ${user?.email ?? 'Not signed in'}`}
                 </h3>
                 <button id="pass-change">Change Password?</button>
-
+                {!authLoading && user && (
+                    <div className="mt-3">
+                        <button
+                            className="btn btn-danger"
+                            onClick={handleDeleteAccount}
+                            disabled={isDeleting}
+                        >
+                            {isDeleting ? 'Deleting account...' : 'Delete Account'}
+                        </button>
+                        {deleteError && <p className="mt-2" role="alert">{deleteError}</p>}
+                    </div>
+                )}
             </section>
 
             <section id="customize-cosmetic">

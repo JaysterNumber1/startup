@@ -56,6 +56,10 @@ export function logout() {
     return requestAuth('/api/auth/logout', { method: 'DELETE' });
 }
 
+export function deleteAccount() {
+    return requestAuth('/api/account', { method: 'DELETE' });
+}
+
 export function getRecentGames() {
     return requestAuth('/api/games/history');
 }
