@@ -1,53 +1,59 @@
 import React, { useEffect, useState } from 'react';
-import { deleteAccount } from '../auth';
-
-const mockMatchDatabase = [
-    {
-        id: 'match-1',
-        opponent: 'S0meb0dyS0metime',
-        date: '2026-09-18',
-        result: 'You Won!',
-        moves: ['You: P-7f', 'Opponent: P-3d', 'You: P-2f', 'Opponent: P-8d']
-    },
-    {
-        id: 'match-2',
-        opponent: 'S0meb0dyS0metime',
-        date: '2026-09-18',
-        result: 'You Lost!',
-        moves: ['You: P-7f', 'Opponent: P-3d', 'You: S-7g', 'Opponent: R-8b']
-    },
-    {
-        id: 'match-3',
-        opponent: 'S0meb0dyS0metime',
-        date: '2026-09-17',
-        result: 'You Drew!',
-        moves: ['You: P-7f', 'Opponent: P-3d', 'You: P-2f', 'Opponent: P-8d']
-    }
-];
-
-function getMatchFromMockDatabase(matchId) {
-    return mockMatchDatabase.find((savedMatch) => savedMatch.id === matchId);
-}
-
-function showMatchPlayByPlay(matchId) {
-    const match = getMatchFromMockDatabase(matchId);
-    if (!match) {
-        window.alert('Match not found.');
-        return;
-    }
-
-    const playByPlay = match.moves.map((move, index) => `${index + 1}. ${move}`).join('\n');
-    window.alert(
-        `Match vs. ${match.opponent} on ${match.date}\n${match.result}\n\n${playByPlay}`
-    );
-}
+import { deleteAccount, getRecentGames } from '../auth';
 
 export function Account({ user, onUserChange, authLoading }) {
     const [gamePieceStyle, setGamePieceStyle] = useState('cartoony');
     const [quote, setQuote] = useState(null);
     const [quoteError, setQuoteError] = useState('');
+    const [recentGames, setRecentGames] = useState([]);
+    const [gamesLoading, setGamesLoading] = useState(true);
+    const [gamesError, setGamesError] = useState('');
     const [deleteError, setDeleteError] = useState('');
     const [isDeleting, setIsDeleting] = useState(false);
+
+    useEffect(() => {
+        let isMounted = true;
+
+        if (authLoading) {
+            return () => {
+                isMounted = false;
+            };
+        }
+
+        if (!user) {
+            setRecentGames([]);
+            setGamesLoading(false);
+            return () => {
+                isMounted = false;
+            };
+        }
+
+        setGamesLoading(true);
+        setGamesError('');
+        getRecentGames()
+            .then((games) => {
+                if (!Array.isArray(games)) {
+                    throw new Error('Game history returned invalid data');
+                }
+                if (isMounted) {
+                    setRecentGames(games);
+                }
+            })
+            .catch((error) => {
+                if (isMounted) {
+                    setGamesError(error.message);
+                }
+            })
+            .finally(() => {
+                if (isMounted) {
+                    setGamesLoading(false);
+                }
+            });
+
+        return () => {
+            isMounted = false;
+        };
+    }, [user, authLoading]);
 
     useEffect(() => {
         const controller = new AbortController();
@@ -147,21 +153,40 @@ export function Account({ user, onUserChange, authLoading }) {
 
 
             <section id="match-history">
-                <h3>
-                    Match History - DataBase Access!
-                </h3>
-                {mockMatchDatabase.map((match) => (
-                    <article className="match" key={match.id}>
-                        Played {match.opponent} on {match.date}
-                        <p>{match.result}</p>
-                        <button
-                            className="view-match"
-                            onClick={() => showMatchPlayByPlay(match.id)}
-                        >
-                            See Match play-by-play?
-                        </button>
-                    </article>
-                ))}
+                <h3>Recent Games</h3>
+                {authLoading || gamesLoading ? (
+                    <p aria-live="polite">Loading games...</p>
+                ) : !user ? (
+                    <p>Sign in to see your game history.</p>
+                ) : gamesError ? (
+                    <p role="alert">Unable to load games: {gamesError}</p>
+                ) : recentGames.length === 0 ? (
+                    <p>No games have been recorded yet.</p>
+                ) : (
+                    <ol>
+                        {recentGames.map((game, index) => {
+                            const playedAt = new Date(game.playedAt);
+                            const validDate = !Number.isNaN(playedAt.getTime());
+
+                            return (
+                                <li key={game._id ?? `${game.playedAt}-${index}`}>
+                                    <article className="match">
+                                        <p>Opponent: {game.opponent}</p>
+                                        <p>
+                                            Result: {game.winner === user.email ? 'You won' : 'You lost'}
+                                        </p>
+                                        <p>
+                                            Played:{' '}
+                                            {validDate
+                                                ? playedAt.toLocaleString()
+                                                : 'Date unavailable'}
+                                        </p>
+                                    </article>
+                                </li>
+                            );
+                        })}
+                    </ol>
+                )}
             </section>
 
             <section id="anime-api">
