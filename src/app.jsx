@@ -109,7 +109,10 @@ export default function App() {
                         }
                         exact
                     />
-                    <Route path='/account' element={<Account />} />
+                    <Route
+                        path='/account'
+                        element={<Account user={user} authLoading={authLoading} />}
+                    />
                     <Route path='/play' element={<Play />} />
                     <Route path='/rules' element={<Rules />} />
                     <Route path='/history' element={<History />} />

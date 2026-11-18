@@ -41,7 +41,7 @@ function showMatchPlayByPlay(matchId) {
     );
 }
 
-export function Account() {
+export function Account({ user, authLoading }) {
     const [gamePieceStyle, setGamePieceStyle] = useState('cartoony');
     const [quote, setQuote] = useState(null);
     const [quoteError, setQuoteError] = useState('');
@@ -86,7 +86,9 @@ export function Account() {
                     Account Information
                 </h2>
                 <h3>
-                    Username: JaysterNumber1
+                    {authLoading
+                        ? 'Loading account...'
+                        : `Email: ${user?.email ?? 'Not signed in'}`}
                 </h3>
                 <button id="pass-change">Change Password?</button>
 
