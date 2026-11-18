@@ -17,7 +17,6 @@ const {
 const app = express();
 const apiRouter = express.Router();
 const authCookieName = 'token';
-let scores = [];
 
 app.use(express.json());
 app.use(cookieParser());
@@ -80,10 +79,6 @@ apiRouter.delete('/auth/logout', async (req, res) => {
     return res.status(204).end();
 });
 
-apiRouter.get('/scores', verifyAuth, (_req, res) => {
-    res.send(scores);
-});
-
 apiRouter.post('/games/history', verifyAuth, async (req, res) => {
     const { opponent, winner } = req.body ?? {};
     if (
@@ -130,15 +125,6 @@ apiRouter.get('/quote', async (_req, res) => {
     });
 });
 
-apiRouter.post('/score', verifyAuth, (req, res) => {
-    if (!req.body || !Number.isFinite(req.body.score)) {
-        return res.status(400).send({ msg: 'A numeric score is required' });
-    }
-
-    scores = updateScores(req.body);
-    return res.send(scores);
-});
-
 apiRouter.use((_req, res) => {
     res.status(404).send({ msg: 'Not found' });
 });
@@ -168,17 +154,6 @@ async function verifyAuth(req, res, next) {
     }
     req.user = user;
     return next();
-}
-
-function updateScores(newScore) {
-    const insertionIndex = scores.findIndex((score) => newScore.score > score.score);
-    if (insertionIndex === -1) {
-        scores.push(newScore);
-    } else {
-        scores.splice(insertionIndex, 0, newScore);
-    }
-
-    return scores.slice(0, 10);
 }
 
 async function createUser(email, password) {
