@@ -179,7 +179,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
 - [x] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
-- [ ] **Stores data in MongoDB** - I did not complete this part of the deliverable yet. Currently working on storing game history.
+- [x] **Stores data in MongoDB** - I did complete this part: the user's games will automatically be stored upon losing or winning a game, in which the game will be saved to the DB and will be visible from the account tab if logged in.
 - [x] **Stores credentials in MongoDB** - I did complete this part: the user can sucessfully log into their account using their email and password, they can also delete their account in the account tab. If the account does not exist it won't let you log in, and if you go to account without being logged in it tells you and doesn't show the delete button.
 
 ## 🚀 WebSocket deliverable
